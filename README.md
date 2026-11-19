@@ -37,8 +37,9 @@
 - Horizontal anchor is the offhand **item cell**: vanilla draws the 16×16 item at
   `guiWidth/2-117` (left) / `guiWidth/2+101` (right), so the centres are `center∓109`.
   (The 29-wide frame sprite starts at `center-120`; its centre `center∓105.5` would be 3.5 px off.)
-- With `position: "center"` the horizontal anchor becomes the screen centre (`guiWidth/2`). Either
-  anchor is then shifted by `horizontalOffset` and clamped so the whole gauge stays on screen.
+- With `position: "center"` the gauge is placed in the middle of the whole HUD (both axes, not above
+  the actionbar) and `gapAboveActionBar` no longer applies. Either anchor is then shifted by
+  `horizontalOffset` and clamped so the whole gauge stays on screen.
 - The actionbar text is drawn after `translate(0, guiHeight-68)` at local `y=-4`,
   so its top edge is ≈ `guiHeight-72`.
 - The gauge bottom sits at `guiHeight - 72 - gapAboveActionBar` (default 2 px), so it floats just
@@ -78,10 +79,10 @@ With **Mod Menu** installed everything below is also editable in-game
 | Key | Meaning |
 | --- | --- |
 | `enabled` | Master switch. When false nothing is drawn. |
-| `position` | `"offhand"` anchors to the offhand slot (default); `"center"` anchors to the screen centre. |
+| `position` | `"offhand"` anchors to the offhand slot (default); `"center"` puts the gauge in the middle of the screen. |
 | `horizontalOffset` | Pixels to shift from that anchor: negative = left, positive = right, range ±160. The gauge is pulled back onto the screen if it would leave it. |
 | `scale` | Gauge scale: visible content width = 20 px (one slot cell) × this value. `1.0` = one slot wide, `1.1` slightly wider (default). Height always follows the texture's 52:128 ratio. |
-| `gapAboveActionBar` | Pixels between the gauge bottom and the top of the actionbar text. |
+| `gapAboveActionBar` | Pixels between the gauge bottom and the top of the actionbar text. Only used by `"offhand"`. |
 
 In-game (Mod Menu), `position` is a cycle button and the numbers are sliders, so you can tune them
 while watching the result.

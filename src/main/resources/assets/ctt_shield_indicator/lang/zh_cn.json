@@ -1,7 +1,7 @@
 {
   "ctt_shield_indicator.config.title": "盾牌指示器设置",
   "ctt_shield_indicator.config.enabled": "启用",
-  "ctt_shield_indicator.config.position": "位置：%s",
+  "ctt_shield_indicator.config.position": "位置",
   "ctt_shield_indicator.config.position.offhand": "副手槽上方",
   "ctt_shield_indicator.config.position.center": "屏幕中心",
   "ctt_shield_indicator.config.offset": "水平偏移：%s 像素",

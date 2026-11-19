@@ -1,7 +1,7 @@
 {
   "ctt_shield_indicator.config.title": "Shield Indicator Settings",
   "ctt_shield_indicator.config.enabled": "Enabled",
-  "ctt_shield_indicator.config.position": "Position: %s",
+  "ctt_shield_indicator.config.position": "Position",
   "ctt_shield_indicator.config.position.offhand": "Above offhand slot",
   "ctt_shield_indicator.config.position.center": "Screen center",
   "ctt_shield_indicator.config.offset": "Horizontal offset: %s px",
