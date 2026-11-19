@@ -4,14 +4,14 @@
 
 仓库里**只保留源码与构建脚本**，构建产物和本地缓存不进仓库（`.gitignore` 已覆盖）。
 
-### 必须提交（共 34 个文件，约 110 KB）
+### 必须提交（共 39 个文件，约 156 KB）
 
 ```
 .gitattributes                 换行策略（gradlew 用 LF、.bat/.ps1 用 CRLF、png/jar 视为二进制）
 .gitignore                     排除 build/ .gradle/ run/
 LICENSE                        MIT，构建时会打进 jar
-README.md                      中文主说明
-README_EN.md                   英文说明（面向国际用户 / 平台）
+README.md                      英文主说明（默认，面向国际用户 / 平台）
+README.zh-CN.md                中文说明
 CHANGELOG.md                   版本记录
 build.gradle                   构建脚本
 settings.gradle
@@ -20,9 +20,12 @@ gradlew / gradlew.bat          Gradle Wrapper 启动脚本
 gradle/wrapper/gradle-wrapper.jar
 gradle/wrapper/gradle-wrapper.properties
 docs/layout-preview.png        文档用布局示意图
+docs/icon-512.png              平台用 512x512 图标
+docs/publishing.md             本文件
+.github/workflows/build.yml    CI
 src/main/java/com/namylium/cttshieldindicator/*.java        3 个类
 src/main/resources/fabric.mod.json
-src/main/resources/assets/**   48 个 item model 定义 / 58 个模型 / 9 张纹理
+src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹理
 ```
 
 ### 不要提交（已被忽略）
