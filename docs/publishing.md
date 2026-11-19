@@ -1,5 +1,17 @@
 # 发布说明（GitHub / Modrinth / CurseForge）
 
+## 仓库地址
+
+| 用途 | 链接 |
+| --- | --- |
+| 源码 | https://github.com/nyaLium/ctt-shield-indicator |
+| Issues | https://github.com/nyaLium/ctt-shield-indicator/issues |
+| Releases（下载 jar） | https://github.com/nyaLium/ctt-shield-indicator/releases |
+| Actions（CI） | https://github.com/nyaLium/ctt-shield-indicator/actions |
+
+这三个链接已写入 `fabric.mod.json` 的 `contact` 字段（会打进 jar）、两个 README 的导航栏与「相关链接」段。
+Modrinth / CurseForge 发布后，把对应链接补进 README 的 `## Links` 段即可。
+
 ## 一、GitHub：需要上传哪些文件
 
 仓库里**只保留源码与构建脚本**，构建产物和本地缓存不进仓库（`.gitignore` 已覆盖）。
@@ -41,15 +53,19 @@ src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹�
 - `.github/workflows/build.yml`：推送到 main 时自动 `./gradlew build` 并上传 artifact。
 - 仓库设置里加 Topics：`minecraft` `fabric` `minecraft-mod` `hud` `client-side`。
 
-### 首次推送
+### 推送
 
-仓库已经 `git init` 并提交好了，只差远程地址：
+仓库已 `git init` 并提交好 5 个 commit，远程 `origin` 也已指向
+`https://github.com/nyaLium/ctt-shield-indicator.git`，只差推送：
 
 ```bash
 cd "CTT - Shield Enhancing v1.0 - 26.3 Client Mod"
-git remote add origin https://github.com/nyaLium/ctt-shield-indicator.git
 git push -u origin main
 ```
+
+> 首次推送会要求登录：优先用浏览器授权；若报 “password authentication was removed”，
+> 用 GitHub → Settings → Developer settings → Fine-grained token（`Contents: Read and write`）
+> 当密码。用户名填 `nyaLium`。
 
 > 本仓库的提交身份已设为 `nyaLium <nyaLium@users.noreply.github.com>`。
 > 换成自己的邮箱：`git config user.email "<你的邮箱>"`，再
@@ -65,7 +81,19 @@ git push -u origin main
 }
 ```
 
-> 如果仓库名不叫 `ctt-shield-indicator`，改这三行（以及两个 README 顶部链接）再 `./gradlew build` 一次。
+> 如果仓库名不叫 `ctt-shield-indicator`，改这三行（以及两个 README 顶部链接与「相关链接」段）、
+> 执行 `git remote set-url origin <新地址>`，再 `./gradlew build` 一次。
+
+### 打 tag 发 Release
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+然后到 https://github.com/nyaLium/ctt-shield-indicator/releases/new ：
+选 tag `v1.0.0` → 上传 `build/libs/ctt_shield_indicator-1.0.0.jar` → 正文粘贴 `CHANGELOG.md` 的 1.0.0 段
+→ Publish。Release 页面链接即下载地址。
 
 ## 二、要发布的文件
 
@@ -168,7 +196,11 @@ so it works in singleplayer, on servers, everywhere.
 - [ ] `CHANGELOG.md` 已补本次版本条目
 - [ ] `./gradlew clean build` 通过
 - [ ] jar 内包含 `LICENSE_ctt_shield_indicator`（`LICENSE` 文件存在后会自动打入）
+- [ ] jar 内 `fabric.mod.json` 的 `contact` 三个链接可打开（可用 `unzip -p <jar> fabric.mod.json` 检查）
+- [ ] README 的徽章、Source / Releases / Issues 链接可打开
 - [ ] 已在真实客户端里验证过（进世界看指示器位置/大小）
 - [ ] GitHub Release 打了 tag `v1.0.0` 并附 jar
 - [ ] 平台里把 Game version 勾成 `26.3`、Loader 勾成 `Fabric`、Environment 选 `Client`
+- [ ] 平台页面的 Source / Issues 填 GitHub 地址
 - [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）
+- [ ] 平台发布后，把 Modrinth / CurseForge 链接补进两个 README 的「相关链接」段

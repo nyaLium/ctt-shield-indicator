@@ -3,7 +3,7 @@
 [![build](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [Source](https://github.com/nyaLium/ctt-shield-indicator) · [Issues](https://github.com/nyaLium/ctt-shield-indicator/issues)
+**English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [Source](https://github.com/nyaLium/ctt-shield-indicator) · [Releases](https://github.com/nyaLium/ctt-shield-indicator/releases) · [Issues](https://github.com/nyaLium/ctt-shield-indicator/issues)
 
 | Requirement | Version |
 | --- | --- |
@@ -91,6 +91,13 @@ src/main/resources/
     assets/minecraft/               meter models and textures (used by meterMode=model)
 docs/                               layout preview, publishing guide
 ```
+
+## Links
+
+- Source / Issues — https://github.com/nyaLium/ctt-shield-indicator
+- Releases (download the jar) — https://github.com/nyaLium/ctt-shield-indicator/releases
+- Changelog — [CHANGELOG.md](CHANGELOG.md)
+- Publishing notes — [docs/publishing.md](docs/publishing.md)
 
 ## License
 

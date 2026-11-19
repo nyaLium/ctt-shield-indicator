@@ -3,7 +3,7 @@
 [![build](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-[English](README.md) · **中文** · [更新日志](CHANGELOG.md) · [发布说明](docs/publishing.md) · [源码](https://github.com/nyaLium/ctt-shield-indicator) · [Issues](https://github.com/nyaLium/ctt-shield-indicator/issues)
+[English](README.md) · **中文** · [更新日志](CHANGELOG.md) · [发布说明](docs/publishing.md) · [源码](https://github.com/nyaLium/ctt-shield-indicator) · [下载](https://github.com/nyaLium/ctt-shield-indicator/releases) · [Issues](https://github.com/nyaLium/ctt-shield-indicator/issues)
 
 | 项目 | 值 |
 | --- | --- |
@@ -90,6 +90,13 @@ src/main/resources/
     assets/minecraft/               meter 模型与纹理（meterMode=model 用）
 docs/                               布局示意图、发布说明
 ```
+
+## 相关链接
+
+- 源码 / 问题反馈 — https://github.com/nyaLium/ctt-shield-indicator
+- 下载（Releases） — https://github.com/nyaLium/ctt-shield-indicator/releases
+- 更新日志 — [CHANGELOG.md](CHANGELOG.md)
+- 发布说明 — [docs/publishing.md](docs/publishing.md)
 
 ## 许可证
 
