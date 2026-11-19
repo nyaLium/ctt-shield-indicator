@@ -47,11 +47,11 @@ src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹�
 
 ```bash
 cd "CTT - Shield Enhancing v1.0 - 26.3 Client Mod"
-git remote add origin https://github.com/NyaLium/ctt-shield-indicator.git
+git remote add origin https://github.com/nyaLium/ctt-shield-indicator.git
 git push -u origin main
 ```
 
-> 本仓库的提交身份已设为 `NyaLium <nyalium@users.noreply.github.com>`。
+> 本仓库的提交身份已设为 `nyaLium <nyaLium@users.noreply.github.com>`。
 > 换成自己的邮箱：`git config user.email "<你的邮箱>"`，再
 > `git rebase --root --exec "git commit --amend --no-edit --reset-author"`。
 
@@ -59,9 +59,9 @@ git push -u origin main
 
 ```json
 "contact": {
-  "homepage": "https://github.com/NyaLium/ctt-shield-indicator",
-  "sources": "https://github.com/NyaLium/ctt-shield-indicator",
-  "issues": "https://github.com/NyaLium/ctt-shield-indicator/issues"
+  "homepage": "https://github.com/nyaLium/ctt-shield-indicator",
+  "sources": "https://github.com/nyaLium/ctt-shield-indicator",
+  "issues": "https://github.com/nyaLium/ctt-shield-indicator/issues"
 }
 ```
 

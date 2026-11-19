@@ -1,9 +1,9 @@
 # CTT Shield Indicator (Minecraft 26.3 client mod)
 
-[![build](https://github.com/NyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/NyaLium/ctt-shield-indicator/actions/workflows/build.yml)
+[![build](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [Source](https://github.com/NyaLium/ctt-shield-indicator) · [Issues](https://github.com/NyaLium/ctt-shield-indicator/issues)
+**English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [Source](https://github.com/nyaLium/ctt-shield-indicator) · [Issues](https://github.com/nyaLium/ctt-shield-indicator/issues)
 
 | Requirement | Version |
 | --- | --- |

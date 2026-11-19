@@ -5,12 +5,12 @@
   "name": "CTT Shield Indicator",
   "description": "Client-side shield durability gauge above the offhand slot.",
   "authors": [
-    "NyaLium"
+    "nyaLium"
   ],
   "contact": {
-    "homepage": "https://github.com/NyaLium/ctt-shield-indicator",
-    "sources": "https://github.com/NyaLium/ctt-shield-indicator",
-    "issues": "https://github.com/NyaLium/ctt-shield-indicator/issues"
+    "homepage": "https://github.com/nyaLium/ctt-shield-indicator",
+    "sources": "https://github.com/nyaLium/ctt-shield-indicator",
+    "issues": "https://github.com/nyaLium/ctt-shield-indicator/issues"
   },
   "license": "MIT",
   "icon": "assets/ctt_shield_indicator/icon.png",
