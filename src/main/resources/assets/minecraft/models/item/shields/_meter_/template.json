@@ -1,0 +1,45 @@
+{
+	"parent": "minecraft:item/generated",
+	"elements": [
+		{
+			"from": [0, 5, 8],
+			"to": [16, 21, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 13, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#layer0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#layer0"}
+			}
+		}
+	],
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0, 0, 0]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0, 0, 0]
+		},
+		"firstperson_righthand": {
+			"scale": [0, 0, 0]
+		},
+		"firstperson_lefthand": {
+			"scale": [0, 0, 0]
+		},
+		"ground": {
+			"scale": [0, 0, 0]
+		},
+		"gui": {
+			"translation": [0, 80, -80],
+			"scale": [4, 4, 4]
+		},
+		"head": {
+			"scale": [0, 0, 0]
+		},
+		"fixed": {
+			"scale": [0, 0, 0]
+		},
+		"on_shelf": {
+			"scale": [0, 0, 0]
+		}
+	}
+}

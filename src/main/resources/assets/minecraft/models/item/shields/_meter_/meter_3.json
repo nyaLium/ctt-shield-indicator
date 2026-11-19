@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/shields/_meter_/template",
+	"textures": {
+		"layer0": "minecraft:item/shields/meter_3"
+	}
+}
