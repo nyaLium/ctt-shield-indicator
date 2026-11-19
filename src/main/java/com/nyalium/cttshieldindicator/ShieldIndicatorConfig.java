@@ -1,4 +1,4 @@
-package com.namylium.cttshieldindicator;
+package com.nyalium.cttshieldindicator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

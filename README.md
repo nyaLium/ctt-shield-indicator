@@ -1,6 +1,9 @@
 # CTT Shield Indicator (Minecraft 26.3 client mod)
 
-**English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [MIT License](LICENSE)
+[![build](https://github.com/NyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/NyaLium/ctt-shield-indicator/actions/workflows/build.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [Source](https://github.com/NyaLium/ctt-shield-indicator) · [Issues](https://github.com/NyaLium/ctt-shield-indicator/issues)
 
 | Requirement | Version |
 | --- | --- |
@@ -78,7 +81,7 @@ Changes take effect after re-entering the world or restarting the game.
 ## Project layout
 
 ```
-src/main/java/com/namylium/cttshieldindicator/
+src/main/java/com/nyalium/cttshieldindicator/
     CttShieldIndicatorClient.java   entrypoint, registers the HUD element
     ShieldIndicatorHud.java         conditions + drawing
     ShieldIndicatorConfig.java      config/ctt_shield_indicator.json

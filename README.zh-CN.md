@@ -1,6 +1,9 @@
 # CTT Shield Indicator（26.3 客户端 Mod）
 
-[English](README.md) · **中文** · [更新日志](CHANGELOG.md) · [发布说明](docs/publishing.md) · [MIT License](LICENSE)
+[![build](https://github.com/NyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/NyaLium/ctt-shield-indicator/actions/workflows/build.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+[English](README.md) · **中文** · [更新日志](CHANGELOG.md) · [发布说明](docs/publishing.md) · [源码](https://github.com/NyaLium/ctt-shield-indicator) · [Issues](https://github.com/NyaLium/ctt-shield-indicator/issues)
 
 | 项目 | 值 |
 | --- | --- |
@@ -77,7 +80,7 @@
 ## 目录结构
 
 ```
-src/main/java/com/namylium/cttshieldindicator/
+src/main/java/com/nyalium/cttshieldindicator/
     CttShieldIndicatorClient.java   入口，注册 HUD 元素
     ShieldIndicatorHud.java         判定 + 绘制
     ShieldIndicatorConfig.java      config/ctt_shield_indicator.json

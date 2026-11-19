@@ -1,4 +1,4 @@
-package com.namylium.cttshieldindicator;
+package com.nyalium.cttshieldindicator;
 
 import java.util.HashMap;
 import java.util.HashSet;

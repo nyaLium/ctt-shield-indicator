@@ -23,7 +23,7 @@ docs/layout-preview.png        文档用布局示意图
 docs/icon-512.png              平台用 512x512 图标
 docs/publishing.md             本文件
 .github/workflows/build.yml    CI
-src/main/java/com/namylium/cttshieldindicator/*.java        3 个类
+src/main/java/com/nyalium/cttshieldindicator/*.java        3 个类
 src/main/resources/fabric.mod.json
 src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹理
 ```
@@ -43,27 +43,29 @@ src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹�
 
 ### 首次推送
 
+仓库已经 `git init` 并提交好了，只差远程地址：
+
 ```bash
 cd "CTT - Shield Enhancing v1.0 - 26.3 Client Mod"
-git init -b main
-git add .
-git commit -m "feat: CTT Shield Indicator 1.0.0 for Minecraft 26.3 (Fabric, client-side)"
-git remote add origin https://github.com/<你的用户名>/<仓库名>.git
+git remote add origin https://github.com/NyaLium/ctt-shield-indicator.git
 git push -u origin main
 ```
 
-> 如果 `git commit` 报 “Please tell me who you are”：
-> `git config user.name "NamyLium"` 与 `git config user.email "<你的邮箱>"`（可加 `--global`）。
+> 本仓库的提交身份已设为 `NyaLium <nyalium@users.noreply.github.com>`。
+> 换成自己的邮箱：`git config user.email "<你的邮箱>"`，再
+> `git rebase --root --exec "git commit --amend --no-edit --reset-author"`。
 
-推送后再把仓库地址补进 `fabric.mod.json`（可选）并重新构建：
+`fabric.mod.json` 里已经写好了 `contact`：
 
 ```json
 "contact": {
-  "homepage": "https://github.com/<用户名>/<仓库名>",
-  "sources": "https://github.com/<用户名>/<仓库名>",
-  "issues": "https://github.com/<用户名>/<仓库名>/issues"
+  "homepage": "https://github.com/NyaLium/ctt-shield-indicator",
+  "sources": "https://github.com/NyaLium/ctt-shield-indicator",
+  "issues": "https://github.com/NyaLium/ctt-shield-indicator/issues"
 }
 ```
+
+> 如果仓库名不叫 `ctt-shield-indicator`，改这三行（以及两个 README 顶部链接）再 `./gradlew build` 一次。
 
 ## 二、要发布的文件
 
