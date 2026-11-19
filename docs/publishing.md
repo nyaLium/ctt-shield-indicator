@@ -59,7 +59,7 @@ src/main/resources/assets/**   4 张计量条纹理 + 图标 + 2 个 lang
 `v1.0.0` / `v1.1.0` 已经推上去了；1.2.0 的改动还在本地，领先 `origin/main` 6 个 commit：
 
 ```bash
-cd "CTT - Shield Enhancing v1.2 - 26.3 Client Mod"
+cd "CTT - Shield Enhancing v1.2 - 1.21.4 Client Mod"
 git push
 ```
 
@@ -112,11 +112,11 @@ git push origin v1.2.0
 | 摘要（≤256 字符） | `Client-side shield durability gauge above the offhand slot. Reads custom_data (shield / shieldAbility) and damage; no server-side datapack needed.` |
 | 中文摘要 | `纯客户端：副手物品带有 shield/shieldAbility 时，在副手槽上方显示盾牌耐久计量条，无需服务端。` |
 | 版本号 | `1.2.0` |
-| 支持的 MC 版本 | `26.3`（只写这一个） |
+| 支持的 MC 版本 | `1.21.4`（只写这一个） |
 | 加载器 | `Fabric` |
 | 环境 | **Client only**（`fabric.mod.json` 里是 `"environment": "client"`） |
 | 许可证 | `MIT` |
-| 依赖（必需） | `Fabric API`、`Fabric Loader >= 0.20.1`、`Java 25` |
+| 依赖（必需） | `Fabric API`、`Fabric Loader >= 0.16.9`、`Java 21` |
 | 可选依赖 | `Mod Menu`（提供游戏内设置界面；平台里填到 "Optional dependency"） |
 | 分类 / Tags | `Utility`、`HUD`、`Client-side`、`Equipment`（Modrinth）；`Cosmetic` / `HUD`（CurseForge） |
 | 图标 | 用 `docs/icon-512.png`（512×512，已按原图放大） |
@@ -144,10 +144,10 @@ git push origin v1.2.0
 
 ## 前置
 
-- Minecraft 26.3
-- Fabric Loader 0.20.1+
-- Fabric API 0.166.2+26.3
-- Java 25
+- Minecraft 1.21.4
+- Fabric Loader 0.16.9+
+- Fabric API 0.119.4+1.21.4
+- Java 21
 
 ## 说明
 
@@ -161,7 +161,7 @@ git push origin v1.2.0
 ```markdown
 ## What it does
 
-A **client-side** Fabric mod for Minecraft 26.3. When the offhand item's `minecraft:custom_data`
+A **client-side** Fabric mod for Minecraft 1.21.4. When the offhand item's `minecraft:custom_data`
 contains `shield:1b` or `shieldAbility:1b`, a durability gauge is drawn above the offhand slot.
 **Nothing is required on the server.**
 
@@ -179,10 +179,10 @@ so it works in singleplayer, on servers, everywhere.
 
 ## Requirements
 
-- Minecraft 26.3
-- Fabric Loader 0.20.1+
-- Fabric API 0.166.2+26.3
-- Java 25
+- Minecraft 1.21.4
+- Fabric Loader 0.16.9+
+- Fabric API 0.119.4+1.21.4
+- Java 21
 
 ## Notes
 
@@ -201,7 +201,7 @@ so it works in singleplayer, on servers, everywhere.
 - [ ] README 的徽章、Source / Releases / Issues 链接可打开
 - [ ] 已在真实客户端里验证过（进世界看指示器位置/大小）
 - [ ] GitHub Release 打了 tag `v1.2.0` 并附 jar
-- [ ] 平台里把 Game version 勾成 `26.3`、Loader 勾成 `Fabric`、Environment 选 `Client`
+- [ ] 平台里把 Game version 勾成 `1.21.4`、Loader 勾成 `Fabric`、Environment 选 `Client`
 - [ ] 平台页面的 Source / Issues 填 GitHub 地址
 - [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）
 - [ ] 平台发布后，把 Modrinth / CurseForge 链接补进两个 README 的「相关链接」段

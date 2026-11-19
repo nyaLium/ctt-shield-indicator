@@ -1,4 +1,4 @@
-# CTT Shield Indicator (Minecraft 26.3 client mod)
+# CTT Shield Indicator (Minecraft 1.21.4 client mod)
 
 [![build](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -7,11 +7,14 @@
 
 | Requirement | Version |
 | --- | --- |
-| Minecraft | 26.3 |
-| Loader | Fabric Loader 0.20.1+ / Fabric API 0.166.2+26.3 |
-| Mod Menu (optional) | 21.0.0+ — only needed for the in-game settings screen |
+| Minecraft | 1.21.4 |
+| Loader | Fabric Loader 0.16.9+ / Fabric API 0.119.4+1.21.4 |
+| Mod Menu (optional) | 13.0.0+ — only needed for the in-game settings screen |
 | Environment | Client only (`"environment": "client"`) |
-| Java | 25 |
+| Java | 21 |
+
+> This is the **`1.21.4` branch** of the project; `main` tracks the Minecraft 26.3 build.
+> Feature set and config format are identical — only the build target and the HUD hook differ.
 
 ## Features
 
@@ -40,8 +43,8 @@
   `guiWidth/2-117` (left) / `guiWidth/2+101` (right), so the centres are `center∓109`.
   (The 29-wide frame sprite starts at `center-120`; its centre `center∓105.5` would be 3.5 px off.)
 - With `position: "center"` the gauge is placed in the middle of the whole HUD (both axes, not above
-  the actionbar) and `gapAboveActionBar` no longer applies. Either anchor is then shifted by
-  `horizontalOffset` and clamped so the whole gauge stays on screen.
+  the actionbar) and `gapAboveActionBar` no longer applies. Either anchor is then shifted by that
+  position's `offset` and clamped so the whole gauge stays on screen.
 - The actionbar text is drawn after `translate(0, guiHeight-68)` at local `y=-4`,
   so its top edge is ≈ `guiHeight-72`.
 - The gauge bottom sits at `guiHeight - 72 - gapAboveActionBar` (default 2 px), so it floats just
@@ -51,7 +54,7 @@
 
 ## Building
 
-Requires JDK 25. A Gradle wrapper (9.9.1) is included:
+Requires JDK 21. A Gradle wrapper (9.9.1) is included:
 
 ```bash
 ./gradlew build
@@ -59,7 +62,7 @@ Requires JDK 25. A Gradle wrapper (9.9.1) is included:
 
 ## Installation
 
-1. Fabric Loader 0.20.1+ and Fabric API 0.166.2+26.3 (client side).
+1. Fabric Loader 0.16.9+ and Fabric API 0.119.4+1.21.4 (client side).
 2. Drop the jar into `.minecraft/mods`.
 
 ## Configuration
@@ -99,7 +102,7 @@ Changes take effect after re-entering the world or restarting the game.
 
 ```
 src/main/java/com/nyalium/cttshieldindicator/
-    CttShieldIndicatorClient.java   entrypoint, registers the HUD element
+    CttShieldIndicatorClient.java   entrypoint, registers the HUD render callback
     ShieldIndicatorHud.java         conditions + drawing
     ShieldIndicatorConfig.java      config/ctt_shield_indicator.json (load/save/reset)
     ModMenuIntegration.java         Mod Menu entrypoint (optional dependency)
