@@ -46,8 +46,6 @@
 - 指示器底端 = `guiHeight - 72 - gapAboveActionBar`（默认 2px），所以它悬在 actionbar 上方，
   既不会被 actionbar 文字盖住，也不遮挡文字。
 
-![布局预览（红虚线为可见内容 22×54.2，蓝虚线为 20×20 的槽位格）](docs/layout-preview.png)
-
 ## 构建
 
 需要 JDK 21。仓库带 Gradle wrapper（9.9.1）：
