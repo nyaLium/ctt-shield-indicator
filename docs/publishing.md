@@ -12,14 +12,11 @@
 这三个链接已写入 `fabric.mod.json` 的 `contact` 字段（会打进 jar）、两个 README 的导航栏与「相关链接」段。
 Modrinth / CurseForge 发布后，把对应链接补进 README 的 `## Links` 段即可。
 
-> CurseForge 的逐步操作、填表值和可直接粘贴的描述正文见 [curseforge.md](curseforge.md) 与
-> [curseforge-description.md](curseforge-description.md)。
-
 ## 一、GitHub：需要上传哪些文件
 
 仓库里**只保留源码与构建脚本**，构建产物和本地缓存不进仓库（`.gitignore` 已覆盖）。
 
-### 必须提交（共 32 个文件，约 171 KB）
+### 必须提交（共 30 个文件，约 173 KB）
 
 ```
 .gitattributes                 换行策略（gradlew 用 LF、.bat/.ps1 用 CRLF、png/jar 视为二进制）
@@ -37,8 +34,6 @@ gradle/wrapper/gradle-wrapper.properties
 docs/layout-preview.png        文档用布局示意图
 docs/icon-512.png              平台用 512x512 图标
 docs/publishing.md             本文件
-docs/curseforge.md             CurseForge 上传步骤（填表值、依赖关系、常见问题）
-docs/curseforge-description.md CurseForge 描述正文（英/中双语，整份粘贴）
 .github/workflows/build.yml    CI
 src/main/java/com/nyalium/cttshieldindicator/*.java        5 个类（含 Mod Menu 集成与设置界面）
 src/main/resources/fabric.mod.json
@@ -60,12 +55,12 @@ src/main/resources/assets/**   4 张计量条纹理 + 图标 + 2 个 lang
 
 ### 推送
 
-仓库已 `git init` 并提交好 5 个 commit，远程 `origin` 也已指向
-`https://github.com/nyaLium/ctt-shield-indicator.git`，只差推送：
+远程 `origin` 指向 `https://github.com/nyaLium/ctt-shield-indicator.git`，
+`v1.0.0` / `v1.1.0` 已经推上去了；1.2.0 的改动还在本地，领先 `origin/main` 6 个 commit：
 
 ```bash
-cd "CTT - Shield Enhancing v1.1 - 26.3 Client Mod"
-git push -u origin main
+cd "CTT - Shield Enhancing v1.2 - 26.3 Client Mod"
+git push
 ```
 
 > 首次推送会要求登录：优先用浏览器授权；若报 “password authentication was removed”，
@@ -92,21 +87,21 @@ git push -u origin main
 ### 打 tag 发 Release
 
 ```bash
-git tag v1.1.0
-git push origin v1.1.0
+git tag v1.2.0
+git push origin v1.2.0
 ```
 
 然后到 https://github.com/nyaLium/ctt-shield-indicator/releases/new ：
-选 tag `v1.1.0` → 上传 `build/libs/ctt_shield_indicator-1.1.0.jar` → 正文粘贴 `CHANGELOG.md` 的 1.1.0 段
+选 tag `v1.2.0` → 上传 `build/libs/ctt_shield_indicator-1.2.0.jar` → 正文粘贴 `CHANGELOG.md` 的 1.2.0 段
 → Publish。Release 页面链接即下载地址。
 
 ## 二、要发布的文件
 
-只上传**一个文件**：`build/libs/ctt_shield_indicator-1.1.0.jar`（36 KB 左右）。
+只上传**一个文件**：`build/libs/ctt_shield_indicator-1.2.0.jar`（41 KB 左右）。
 
 - Modrinth / CurseForge 都**不要**上传 `-sources.jar`。
 - 平台会自动生成下载文件名，无需改名。
-- GitHub 上请走 **Releases**（打 tag `v1.1.0`，附上同一个 jar + `CHANGELOG.md` 内容），
+- GitHub 上请走 **Releases**（打 tag `v1.2.0`，附上同一个 jar + `CHANGELOG.md` 内容），
   不要把 jar 提交进仓库。
 
 ## 三、平台元数据（照抄即可）
@@ -116,7 +111,7 @@ git push origin v1.1.0
 | 名称 | `CTT Shield Indicator` |
 | 摘要（≤256 字符） | `Client-side shield durability gauge above the offhand slot. Reads custom_data (shield / shieldAbility) and damage; no server-side datapack needed.` |
 | 中文摘要 | `纯客户端：副手物品带有 shield/shieldAbility 时，在副手槽上方显示盾牌耐久计量条，无需服务端。` |
-| 版本号 | `1.1.0` |
+| 版本号 | `1.2.0` |
 | 支持的 MC 版本 | `26.3`（只写这一个） |
 | 加载器 | `Fabric` |
 | 环境 | **Client only**（`fabric.mod.json` 里是 `"environment": "client"`） |
@@ -205,18 +200,8 @@ so it works in singleplayer, on servers, everywhere.
 - [ ] jar 内 `fabric.mod.json` 的 `contact` 三个链接可打开（可用 `unzip -p <jar> fabric.mod.json` 检查）
 - [ ] README 的徽章、Source / Releases / Issues 链接可打开
 - [ ] 已在真实客户端里验证过（进世界看指示器位置/大小）
-- [ ] GitHub Release 打了 tag `v1.1.0` 并附 jar
+- [ ] GitHub Release 打了 tag `v1.2.0` 并附 jar
 - [ ] 平台里把 Game version 勾成 `26.3`、Loader 勾成 `Fabric`、Environment 选 `Client`
 - [ ] 平台页面的 Source / Issues 填 GitHub 地址
-- [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）；Mod Menu 标为 Optional
+- [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）
 - [ ] 平台发布后，把 Modrinth / CurseForge 链接补进两个 README 的「相关链接」段
-
-## 五、CurseForge
-
-单独一份操作单：[curseforge.md](curseforge.md)。要点：
-
-- 只传 `ctt_shield_indicator-1.1.0.jar`，**不传** `-sources.jar`；
-- 头像用 `docs/icon-512.png`，Gallery 用 `docs/layout-preview.png`；
-- 依赖关系：`Fabric API` = Required，`Mod Menu` = Optional；
-- 描述正文用 [curseforge-description.md](curseforge-description.md)，整份粘贴；
-- CurseForge 的 game version 列表是人工维护的，**先确认里面有 `26.3`** 再上传。
