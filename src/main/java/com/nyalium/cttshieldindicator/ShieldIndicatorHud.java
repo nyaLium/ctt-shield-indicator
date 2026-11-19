@@ -99,8 +99,11 @@ public final class ShieldIndicatorHud implements HudElement {
         int guiHeight = graphics.guiHeight();
         int center = guiWidth / 2;
 
+        // 当前位置各自的一套参数：缩放比例 + 水平偏移。
+        ShieldIndicatorConfig.Profile profile = config.activeProfile();
+
         // 可见内容宽度 = 一格 × 缩放比例；高度按 52:128 自动。
-        float slots = config.scale > 0.0f ? config.scale : 1.0f;
+        float slots = profile.scale > 0.0f ? profile.scale : 1.0f;
         float width = Math.max(1.0f, Math.min(400.0f, SLOT_CELL_SIZE * slots));
         float height = width * ((float) CONTENT_H / (float) CONTENT_W);
         float scaleX = width / (float) CONTENT_W;
@@ -121,12 +124,16 @@ public final class ShieldIndicatorHud implements HudElement {
         }
 
         // 用户偏移 + 边界保护：整条指示器始终留在屏幕内（四周各留 2px）。
-        anchorX += config.horizontalOffset;
+        anchorX += profile.offset;
         float halfWidth = width / 2.0f;
         anchorX = Math.max(halfWidth + 2.0f, Math.min(guiWidth - halfWidth - 2.0f, anchorX));
         bottomY = Math.max(height + 2.0f, Math.min(guiHeight - 2.0f, bottomY));
 
-        drawTexture(graphics, METER_TEXTURES[meterIndex(ratio)], anchorX, bottomY, scaleX, scaleY);
+        // ARGB 颜色里的 alpha 实现整体透明度（0xFF000000 起算，白色 + alpha）。
+        int alpha = Math.round(255.0f * Math.max(0.0f, Math.min(1.0f, config.opacity)));
+        int color = (alpha << 24) | 0x00FFFFFF;
+
+        drawTexture(graphics, METER_TEXTURES[meterIndex(ratio)], anchorX, bottomY, scaleX, scaleY, color);
     }
 
     /**
@@ -136,7 +143,7 @@ public final class ShieldIndicatorHud implements HudElement {
      * 本地左上角 = {@code (centerX - 68, bottomY - 132)}，再靠 pose 缩放把内容拉到目标尺寸。</p>
      */
     private static void drawTexture(GuiGraphicsExtractor graphics, Identifier texture,
-                                    float centerX, float bottomY, float scaleX, float scaleY) {
+                                    float centerX, float bottomY, float scaleX, float scaleY, int color) {
         Matrix3x2fStack pose = graphics.pose();
         pose.pushMatrix();
         pose.translate(centerX, bottomY);
@@ -151,7 +158,8 @@ public final class ShieldIndicatorHud implements HudElement {
                 0.0f, 0.0f,
                 CANVAS, CANVAS,
                 CANVAS, CANVAS,
-                CANVAS, CANVAS);
+                CANVAS, CANVAS,
+                color);
         pose.popMatrix();
     }
 

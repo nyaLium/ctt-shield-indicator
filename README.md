@@ -20,7 +20,9 @@
 - Offhand only — the same item in the main hand / hotbar / inventory never triggers it.
 - **Hidden at full durability.**
 - **Your choice of position** — anchor the gauge above the offhand slot (default) or at the **centre of
-  the screen**, then nudge it left or right by up to 160 px.
+  the screen**, then nudge it left or right by up to 160 px. Each position remembers its own size and
+  offset, so switching back and forth never loses your tuning.
+- **Adjustable opacity** — fade the gauge back if you want it to stay out of the way.
 - All settings can be changed **in-game through Mod Menu** (Mods → CTT Shield Indicator → Configure),
   or by editing the config file.
 
@@ -70,9 +72,10 @@ With **Mod Menu** installed everything below is also editable in-game
 {
   "enabled": true,
   "position": "offhand",
-  "horizontalOffset": 0,
-  "scale": 1.1,
-  "gapAboveActionBar": 2
+  "opacity": 1.0,
+  "gapAboveActionBar": 2,
+  "offhand": { "scale": 1.1, "offset": 0 },
+  "center": { "scale": 0.85, "offset": 25 }
 }
 ```
 
@@ -80,12 +83,15 @@ With **Mod Menu** installed everything below is also editable in-game
 | --- | --- |
 | `enabled` | Master switch. When false nothing is drawn. |
 | `position` | `"offhand"` anchors to the offhand slot (default); `"center"` puts the gauge in the middle of the screen. |
-| `horizontalOffset` | Pixels to shift from that anchor: negative = left, positive = right, range ±160. The gauge is pulled back onto the screen if it would leave it. |
-| `scale` | Gauge scale: visible content width = 20 px (one slot cell) × this value. `1.0` = one slot wide, `1.1` slightly wider (default). Height always follows the texture's 52:128 ratio. |
+| `opacity` | 0.10–1.00, default 1.00. Only affects the gauge itself. |
 | `gapAboveActionBar` | Pixels between the gauge bottom and the top of the actionbar text. Only used by `"offhand"`. |
+| `offhand` / `center` | Each position keeps its **own** `scale` and `offset`, so switching between them never overwrites the other one's tuning. |
+
+`scale` inside a profile is the gauge width (`20 px × scale`, height follows the texture's 52:128
+ratio); `offset` shifts it left/right by up to ±160 px and is clamped so the gauge stays on screen.
 
 In-game (Mod Menu), `position` is a cycle button and the numbers are sliders, so you can tune them
-while watching the result.
+while watching the result. Scale and offset always edit the position you are currently using.
 
 Changes take effect after re-entering the world or restarting the game.
 

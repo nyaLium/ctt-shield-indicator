@@ -2,6 +2,44 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)，格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)。
 
+## [1.3.0] - 2026-11-19
+
+两个位置各自记住自己的参数，并新增透明度。
+
+### 新增
+
+- **透明度**：0%–100%，默认 100%；只影响指示器本身，不影响其它界面元素。
+- **两个位置的参数互不干扰**：切换位置会载入该位置自己的一套「缩放比例 + 水平偏移」，
+  来回切换不会丢掉另一边的调整。
+
+### 变更
+
+- 屏幕中心模式的出厂值改为 `scale 0.85`、`horizontalOffset +25`（略小，并向右让开准星）；
+  副手槽模式仍是 `1.10 / 0`。
+- 屏幕中心模式下隐藏「与 actionbar 的间距」一行——该模式用不到它。
+
+### 配置文件
+
+```json
+{
+  "enabled": true,
+  "position": "offhand",
+  "opacity": 1.0,
+  "gapAboveActionBar": 2,
+  "offhand": {
+    "scale": 1.1,
+    "offset": 0
+  },
+  "center": {
+    "scale": 0.85,
+    "offset": 25
+  }
+}
+```
+
+旧配置里的 `scale` / `horizontalOffset` 会自动迁移到 `offhand`；
+`gapAboveActionBar` 保持原位置不变。
+
 ## [1.2.0] - 2026-11-19
 
 新增指示器的位置选项，并支持左右平移。

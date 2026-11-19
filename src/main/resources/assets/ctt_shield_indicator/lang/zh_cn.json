@@ -5,6 +5,7 @@
   "ctt_shield_indicator.config.position.offhand": "副手槽上方",
   "ctt_shield_indicator.config.position.center": "屏幕中心",
   "ctt_shield_indicator.config.offset": "水平偏移：%s 像素",
+  "ctt_shield_indicator.config.opacity": "透明度：%s",
   "ctt_shield_indicator.config.scale": "缩放比例：%s 倍",
   "ctt_shield_indicator.config.gap": "与 actionbar 的间距：%s 像素",
   "ctt_shield_indicator.config.reset": "恢复默认"
