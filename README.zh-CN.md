@@ -19,6 +19,7 @@
   **正上方**显示盾牌冷却条。
 - 只在副手显示；主手 / 快捷栏 / 背包中的同一物品不会触发。
 - **耐久满时不显示**
+- **位置可选**：指示条可以对齐副手槽（默认），也可以放到**屏幕中心**，再左右平移 ±160 像素微调。
 - 所有设置都可以**在游戏内通过 Mod Menu 修改**（模组 → CTT Shield Indicator → 配置），也可以直接改配置文件。
 
 | damage / max_damage | 显示 |
@@ -34,6 +35,8 @@
 - 水平方向对齐的是副手**物品格**：原版把 16×16 的物品画在 `guiWidth/2-117`（左）/ `guiWidth/2+101`（右），
   所以物品格中心是 `center∓109`。（29 宽的外框 sprite 从 `center-120` 开始，它的中心 `center∓105.5`
   会偏 3.5px。）
+- 把 `position` 设为 `"center"` 时，水平锚点换成屏幕中心 `guiWidth/2`；无论哪种锚点，都会再叠加
+  `horizontalOffset`，并保证整条指示器留在屏幕内（左右各留 2px）。
 - actionbar 文本画在 `translate(0, guiHeight-68)` 之后、本地 `y=-4` 处 → 文本顶边 ≈ `guiHeight-72`。
 - 指示器底端 = `guiHeight - 72 - gapAboveActionBar`（默认 2px），所以它悬在 actionbar 上方，
   既不会被 actionbar 文字盖住，也不遮挡文字。
@@ -61,6 +64,8 @@
 ```json
 {
   "enabled": true,
+  "position": "offhand",
+  "horizontalOffset": 0,
   "scale": 1.1,
   "gapAboveActionBar": 2
 }
@@ -69,10 +74,12 @@
 | 字段 | 说明 |
 | --- | --- |
 | `enabled` | 总开关，关掉后什么都不画 |
+| `position` | `"offhand"` 对齐副手槽（默认）；`"center"` 对齐屏幕中心 |
+| `horizontalOffset` | 在锚点基础上左右平移的像素数：负数向左、正数向右，范围 ±160；超出屏幕会被自动拉回 |
 | `scale` | 缩放比例：可见内容宽度 = 一格 20px × 本值。`1.0` 与槽位同宽，`1.1` 略宽（默认）；高度始终按纹理 52:128 自动 |
 | `gapAboveActionBar` | 底端与 actionbar 文字顶部的间距（像素） |
 
-游戏内（Mod Menu）这两个数值都是滑块，可以边看效果边拖。
+游戏内（Mod Menu）里「位置」是循环按钮，其余数值都是滑块，可以边看效果边拖。
 
 改完保存后重新进入世界/重开游戏生效。
 
@@ -88,7 +95,7 @@ src/main/java/com/nyalium/cttshieldindicator/
 src/main/resources/
     fabric.mod.json
     assets/ctt_shield_indicator/    计量条纹理、图标、en_us/zh_cn 语言文件
-docs/                               布局示意图、发布说明（含 CurseForge 上架步骤）
+docs/                               布局示意图、发布说明
 ```
 
 ## 相关链接
@@ -97,7 +104,6 @@ docs/                               布局示意图、发布说明（含 CurseFo
 - 下载（Releases） — https://github.com/nyaLium/ctt-shield-indicator/releases
 - 更新日志 — [CHANGELOG.md](CHANGELOG.md)
 - 发布说明 — [docs/publishing.md](docs/publishing.md)
-- CurseForge 上架 — [docs/curseforge.md](docs/curseforge.md)
 
 ## 许可证
 

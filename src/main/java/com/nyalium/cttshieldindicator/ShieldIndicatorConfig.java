@@ -2,6 +2,7 @@ package com.nyalium.cttshieldindicator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,6 +20,23 @@ public final class ShieldIndicatorConfig {
 
     /** 总开关。关掉后指示器完全不显示。 */
     public boolean enabled = true;
+
+    /** 指示器的水平锚点：跟着副手槽，还是钉在屏幕中心。 */
+    public enum Position {
+        /** 对齐副手槽的物品格（1.1.0 之前的行为）。 */
+        @SerializedName("offhand") OFFHAND,
+        /** 对齐屏幕中心，再按 {@link #horizontalOffset} 左右平移。 */
+        @SerializedName("center") CENTER
+    }
+
+    /** 水平锚点，默认跟随副手槽。 */
+    public Position position = Position.OFFHAND;
+
+    /**
+     * 在锚点基础上的水平偏移（像素，正值向右，负值向左）。
+     * 无论哪种锚点都会叠加；绘制时还会被限制在屏幕内。
+     */
+    public int horizontalOffset = 0;
 
     /**
      * 缩放比例：可见内容宽度 = 一格（20px）× 本值，高度按纹理 52:128 自动。

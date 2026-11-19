@@ -33,6 +33,11 @@ public final class ShieldIndicatorConfigScreen extends Screen {
     private static final double GAP_MAX = 20D;
     private static final double GAP_STEP = 1D;
 
+    /** 水平偏移的可调范围（像素，正右负左）。 */
+    private static final double OFFSET_MIN = -160D;
+    private static final double OFFSET_MAX = 160D;
+    private static final double OFFSET_STEP = 1D;
+
     private final Screen parent;
 
     public ShieldIndicatorConfigScreen(Screen parent) {
@@ -53,11 +58,28 @@ public final class ShieldIndicatorConfigScreen extends Screen {
                         (button, value) -> config.enabled = value));
         y += ROW_GAP;
 
+        // 位置：跟随副手槽 / 屏幕中心
+        addRenderableWidget(CycleButton.<ShieldIndicatorConfig.Position>builder(
+                        ShieldIndicatorConfigScreen::positionName, config.position)
+                .withValues(ShieldIndicatorConfig.Position.OFFHAND, ShieldIndicatorConfig.Position.CENTER)
+                .create(left, y, ROW_WIDTH, ROW_HEIGHT,
+                        Component.translatable("ctt_shield_indicator.config.position"),
+                        (button, value) -> config.position = value));
+        y += ROW_GAP;
+
         // 缩放比例
         addRenderableWidget(new ValueSlider(left, y, ROW_WIDTH, ROW_HEIGHT,
                 SCALE_MIN, SCALE_MAX, SCALE_STEP, config.scale,
                 value -> Component.translatable("ctt_shield_indicator.config.scale", String.format(Locale.ROOT, "%.2f", value)),
                 value -> config.scale = (float) value));
+        y += ROW_GAP;
+
+        // 水平偏移
+        addRenderableWidget(new ValueSlider(left, y, ROW_WIDTH, ROW_HEIGHT,
+                OFFSET_MIN, OFFSET_MAX, OFFSET_STEP, config.horizontalOffset,
+                value -> Component.translatable("ctt_shield_indicator.config.offset",
+                        signed((int) Math.round(value))),
+                value -> config.horizontalOffset = (int) Math.round(value)));
         y += ROW_GAP;
 
         // 与 actionbar 的间距
@@ -91,6 +113,19 @@ public final class ShieldIndicatorConfigScreen extends Screen {
         ShieldIndicatorConfig.save();
         // 26.3 里屏幕由 Gui 管理（Screen#onClose 默认实现同样是调 gui.setScreen(null)）
         this.minecraft.gui.setScreen(this.parent);
+    }
+
+    /** 位置选项的显示名。 */
+    private static Component positionName(ShieldIndicatorConfig.Position position) {
+        String key = position == ShieldIndicatorConfig.Position.CENTER
+                ? "ctt_shield_indicator.config.position.center"
+                : "ctt_shield_indicator.config.position.offhand";
+        return Component.translatable(key);
+    }
+
+    /** 偏移量带符号显示，0 时不带正号。 */
+    private static String signed(int value) {
+        return value > 0 ? "+" + value : Integer.toString(value);
     }
 
     /** 带数值标签的滑块：内部用 0..1 的归一化值，applyValue 时量化到 step 并回调。 */

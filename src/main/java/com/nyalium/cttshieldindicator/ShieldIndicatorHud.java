@@ -29,8 +29,10 @@ import org.joml.Matrix3x2fStack;
  * {@code x 42..93 / y 4..131}（52x128），所以可见宽度 = {@code 20px（一格）× scale}，
  * 高度按 52:128 自动得出。</p>
  *
- * <p>水平对齐的是副手<b>物品格</b>的中心（原版把 16x16 物品画在 {@code center-117}，中心为
- * {@code center-109}），不是 29 宽的外框中心（{@code center-105.5}）。</p>
+ * <p>水平位置由 {@link ShieldIndicatorConfig#position} 决定：默认对齐副手<b>物品格</b>的中心
+ * （原版把 16x16 物品画在 {@code center-117}，中心为 {@code center-109}），不是 29 宽的外框中心
+ * （{@code center-105.5}）；也可以改成对齐屏幕中心。两种锚点都会再叠加
+ * {@link ShieldIndicatorConfig#horizontalOffset} 的像素偏移，并限制在屏幕范围内。</p>
  *
  * <p>档位与资源包 {@code items/shield_indicator/enable/*.json} 中的 {@code range_dispatch} 对应
  * （{@code RangeSelectItemModel} 取“阈值 &le; 值”的最后一项）。由于不再绘制盾牌图标，
@@ -94,10 +96,6 @@ public final class ShieldIndicatorHud implements HudElement {
         int guiHeight = graphics.guiHeight();
         int center = guiWidth / 2;
 
-        // 副手“物品格”中心：物品 16x16 画在 center-117 / center+101，中心即 center∓109。
-        HumanoidArm offhandArm = player.getMainArm().getOpposite();
-        float slotCenterX = offhandArm == HumanoidArm.LEFT ? center - 109.0f : center + 109.0f;
-
         // actionbar 文本画在 translate(0, guiHeight-68) 之后、本地 y=-4 处，文本顶边约 guiHeight-72。
         float bottomY = guiHeight - 72 - config.gapAboveActionBar;
 
@@ -108,7 +106,20 @@ public final class ShieldIndicatorHud implements HudElement {
         float scaleX = width / (float) CONTENT_W;
         float scaleY = height / (float) CONTENT_H;
 
-        drawTexture(graphics, METER_TEXTURES[meterIndex(ratio)], slotCenterX, bottomY, scaleX, scaleY);
+        // 水平锚点：副手“物品格”中心（物品 16x16 画在 center-117 / center+101，中心即 center∓109），
+        // 或屏幕中心；再叠加用户设置的水平偏移，并限制在屏幕内（至少留 2px 边距）。
+        float anchorX;
+        if (config.position == ShieldIndicatorConfig.Position.CENTER) {
+            anchorX = center;
+        } else {
+            HumanoidArm offhandArm = player.getMainArm().getOpposite();
+            anchorX = offhandArm == HumanoidArm.LEFT ? center - 109.0f : center + 109.0f;
+        }
+        anchorX += config.horizontalOffset;
+        float halfWidth = width / 2.0f;
+        anchorX = Math.max(halfWidth + 2.0f, Math.min(guiWidth - halfWidth - 2.0f, anchorX));
+
+        drawTexture(graphics, METER_TEXTURES[meterIndex(ratio)], anchorX, bottomY, scaleX, scaleY);
     }
 
     /**
