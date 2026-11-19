@@ -9,6 +9,7 @@
 | --- | --- |
 | Minecraft | 26.3 |
 | 加载器 | Fabric Loader 0.20.1+ / Fabric API 0.166.2+26.3 |
+| Mod Menu（可选） | 21.0.0+，只有游戏内设置界面需要 |
 | 环境 | 纯客户端（`"environment": "client"`） |
 | Java | 25 |
 
@@ -18,6 +19,7 @@
   **正上方**显示盾牌冷却条。
 - 只在副手显示；主手 / 快捷栏 / 背包中的同一物品不会触发。
 - **耐久满时不显示**
+- 所有设置都可以**在游戏内通过 Mod Menu 修改**（模组 → CTT Shield Indicator → 配置），也可以直接改配置文件。
 
 | damage / max_damage | 显示 |
 | --- | --- |
@@ -53,7 +55,8 @@
 
 ## 配置
 
-首次启动生成 `config/ctt_shield_indicator.json`：
+首次启动生成 `config/ctt_shield_indicator.json`。装了 **Mod Menu** 的话，下面这些都能在游戏内改
+（模组 → CTT Shield Indicator → 配置），界面上还有「恢复默认」按钮。
 
 ```json
 {
@@ -83,10 +86,12 @@
 src/main/java/com/nyalium/cttshieldindicator/
     CttShieldIndicatorClient.java   入口，注册 HUD 元素
     ShieldIndicatorHud.java         判定 + 绘制
-    ShieldIndicatorConfig.java      config/ctt_shield_indicator.json
+    ShieldIndicatorConfig.java      config/ctt_shield_indicator.json（读/写/恢复默认）
+    ModMenuIntegration.java         Mod Menu 入口点（可选依赖）
+    ShieldIndicatorConfigScreen.java  游戏内设置界面
 src/main/resources/
     fabric.mod.json
-    assets/ctt_shield_indicator/    item model 定义（meter）+ 计量条纹理
+    assets/ctt_shield_indicator/    item model 定义（meter）、计量条纹理、en_us/zh_cn 语言文件
     assets/minecraft/               meter 模型与纹理（meterMode=model 用）
 docs/                               布局示意图、发布说明
 ```

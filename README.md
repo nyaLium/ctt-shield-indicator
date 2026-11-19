@@ -9,6 +9,7 @@
 | --- | --- |
 | Minecraft | 26.3 |
 | Loader | Fabric Loader 0.20.1+ / Fabric API 0.166.2+26.3 |
+| Mod Menu (optional) | 21.0.0+ — only needed for the in-game settings screen |
 | Environment | Client only (`"environment": "client"`) |
 | Java | 25 |
 
@@ -18,6 +19,8 @@
   a shield cooldown bar is drawn **directly above** the offhand slot.
 - Offhand only — the same item in the main hand / hotbar / inventory never triggers it.
 - **Hidden at full durability.**
+- All settings can be changed **in-game through Mod Menu** (Mods → CTT Shield Indicator → Configure),
+  or by editing the config file.
 
 | damage / max_damage | Shown |
 | --- | --- |
@@ -54,7 +57,9 @@ Requires JDK 25. A Gradle wrapper (9.9.1) is included:
 
 ## Configuration
 
-Generated on first launch at `config/ctt_shield_indicator.json`:
+Generated on first launch at `config/ctt_shield_indicator.json`.
+With **Mod Menu** installed everything below is also editable in-game
+(Mods → CTT Shield Indicator → Configure), including a "Reset to defaults" button.
 
 ```json
 {
@@ -84,10 +89,12 @@ Changes take effect after re-entering the world or restarting the game.
 src/main/java/com/nyalium/cttshieldindicator/
     CttShieldIndicatorClient.java   entrypoint, registers the HUD element
     ShieldIndicatorHud.java         conditions + drawing
-    ShieldIndicatorConfig.java      config/ctt_shield_indicator.json
+    ShieldIndicatorConfig.java      config/ctt_shield_indicator.json (load/save/reset)
+    ModMenuIntegration.java         Mod Menu entrypoint (optional dependency)
+    ShieldIndicatorConfigScreen.java  in-game settings screen
 src/main/resources/
     fabric.mod.json
-    assets/ctt_shield_indicator/    item model definitions (meter) + gauge textures
+    assets/ctt_shield_indicator/    item model definitions (meter), gauge textures, en_us/zh_cn lang
     assets/minecraft/               meter models and textures (used by meterMode=model)
 docs/                               layout preview, publishing guide
 ```

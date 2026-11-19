@@ -16,7 +16,7 @@ Modrinth / CurseForge 发布后，把对应链接补进 README 的 `## Links` �
 
 仓库里**只保留源码与构建脚本**，构建产物和本地缓存不进仓库（`.gitignore` 已覆盖）。
 
-### 必须提交（共 39 个文件，约 156 KB）
+### 必须提交（共 43 个文件，约 168 KB）
 
 ```
 .gitattributes                 换行策略（gradlew 用 LF、.bat/.ps1 用 CRLF、png/jar 视为二进制）
@@ -35,9 +35,9 @@ docs/layout-preview.png        文档用布局示意图
 docs/icon-512.png              平台用 512x512 图标
 docs/publishing.md             本文件
 .github/workflows/build.yml    CI
-src/main/java/com/nyalium/cttshieldindicator/*.java        3 个类
+src/main/java/com/nyalium/cttshieldindicator/*.java        5 个类（含 Mod Menu 集成与设置界面）
 src/main/resources/fabric.mod.json
-src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹理
+src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹理 / 2 个 lang
 ```
 
 ### 不要提交（已被忽略）
@@ -116,7 +116,8 @@ git push origin v1.0.0
 | 加载器 | `Fabric` |
 | 环境 | **Client only**（`fabric.mod.json` 里是 `"environment": "client"`） |
 | 许可证 | `MIT` |
-| 依赖 | `Fabric API`（必需）、`Fabric Loader >= 0.20.1`、`Java 25` |
+| 依赖（必需） | `Fabric API`、`Fabric Loader >= 0.20.1`、`Java 25` |
+| 可选依赖 | `Mod Menu`（提供游戏内设置界面；平台里填到 "Optional dependency"） |
 | 分类 / Tags | `Utility`、`HUD`、`Client-side`、`Equipment`（Modrinth）；`Cosmetic` / `HUD`（CurseForge） |
 | 图标 | 用 `docs/icon-512.png`（512×512，已按原图放大） |
 | 源码链接 | GitHub 仓库地址 |

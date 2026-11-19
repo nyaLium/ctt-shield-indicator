@@ -19,6 +19,9 @@
 - 水平对齐副手**物品格**中心（`center∓109`），不是 29 宽的外框中心。
 - `config/ctt_shield_indicator.json` 配置：`enabled` / `showMeter` / `widthSlots` / `heightSlots` /
   `gapAboveActionBar` / `meterMode`（`texture` 或 `model`）。
+- **Mod Menu 集成**：游戏内「模组 → CTT Shield Indicator → 配置」即可调整上面所有选项，
+  带「恢复默认」按钮，关闭界面自动写回配置文件。Mod Menu 是可选依赖，未安装时照常运行。
+- 中英文界面文本（`assets/ctt_shield_indicator/lang/{en_us,zh_cn}.json`）。
 - 无需服务端安装任何数据包或 Mod。
 
 ### 技术说明

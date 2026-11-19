@@ -12,6 +12,14 @@ base {
 
 repositories {
     mavenCentral()
+    // Mod Menu 发布在 Modrinth 的 maven 上（Terraformers 的仓库在部分网络下不可达）
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
 }
 
 dependencies {
@@ -20,6 +28,11 @@ dependencies {
     // no-remap 模式下没有 modImplementation，直接用普通依赖配置
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Mod Menu 是可选依赖：只在编译期提供 API，运行时没装也不影响；
+    // runtimeOnly 只用于本地 runClient 验证设置界面，不会打进发布的 jar。
+    compileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
+    runtimeOnly "maven.modrinth:modmenu:${project.modmenu_version}"
 }
 
 processResources {

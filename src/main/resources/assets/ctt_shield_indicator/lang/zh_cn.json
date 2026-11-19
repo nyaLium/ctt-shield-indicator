@@ -1,0 +1,13 @@
+{
+  "ctt_shield_indicator.config.title": "盾牌指示器设置",
+  "ctt_shield_indicator.config.enabled": "启用",
+  "ctt_shield_indicator.config.show_meter": "显示计量条",
+  "ctt_shield_indicator.config.width": "宽度（格）",
+  "ctt_shield_indicator.config.height": "高度（格）",
+  "ctt_shield_indicator.config.gap": "与 actionbar 的间距",
+  "ctt_shield_indicator.config.meter_mode": "计量条绘制方式",
+  "ctt_shield_indicator.config.reset": "恢复默认",
+  "ctt_shield_indicator.mode.texture": "纹理",
+  "ctt_shield_indicator.mode.model": "模型",
+  "ctt_shield_indicator.value.auto": "自动"
+}

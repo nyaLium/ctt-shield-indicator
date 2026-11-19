@@ -18,6 +18,9 @@
   "entrypoints": {
     "client": [
       "com.nyalium.cttshieldindicator.CttShieldIndicatorClient"
+    ],
+    "modmenu": [
+      "com.nyalium.cttshieldindicator.ModMenuIntegration"
     ]
   },
   "depends": {
@@ -25,5 +28,8 @@
     "minecraft": ">=${minecraft_version}",
     "java": ">=25",
     "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": ">=21.0.0"
   }
 }
