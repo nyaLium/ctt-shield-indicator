@@ -91,7 +91,7 @@ src/main/java/com/nyalium/cttshieldindicator/
 src/main/resources/
     fabric.mod.json
     assets/ctt_shield_indicator/    gauge textures, icon, en_us/zh_cn lang
-docs/                               layout preview, publishing guide
+docs/                               layout preview, publishing + CurseForge guides
 ```
 
 ## Links
@@ -100,6 +100,7 @@ docs/                               layout preview, publishing guide
 - Releases (download the jar) — https://github.com/nyaLium/ctt-shield-indicator/releases
 - Changelog — [CHANGELOG.md](CHANGELOG.md)
 - Publishing notes — [docs/publishing.md](docs/publishing.md)
+- CurseForge upload guide — [docs/curseforge.md](docs/curseforge.md)
 
 ## License
 

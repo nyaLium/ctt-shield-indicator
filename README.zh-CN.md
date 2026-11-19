@@ -88,7 +88,7 @@ src/main/java/com/nyalium/cttshieldindicator/
 src/main/resources/
     fabric.mod.json
     assets/ctt_shield_indicator/    计量条纹理、图标、en_us/zh_cn 语言文件
-docs/                               布局示意图、发布说明
+docs/                               布局示意图、发布说明（含 CurseForge 上架步骤）
 ```
 
 ## 相关链接
@@ -97,6 +97,7 @@ docs/                               布局示意图、发布说明
 - 下载（Releases） — https://github.com/nyaLium/ctt-shield-indicator/releases
 - 更新日志 — [CHANGELOG.md](CHANGELOG.md)
 - 发布说明 — [docs/publishing.md](docs/publishing.md)
+- CurseForge 上架 — [docs/curseforge.md](docs/curseforge.md)
 
 ## 许可证
 

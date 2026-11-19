@@ -12,11 +12,14 @@
 这三个链接已写入 `fabric.mod.json` 的 `contact` 字段（会打进 jar）、两个 README 的导航栏与「相关链接」段。
 Modrinth / CurseForge 发布后，把对应链接补进 README 的 `## Links` 段即可。
 
+> CurseForge 的逐步操作、填表值和可直接粘贴的描述正文见 [curseforge.md](curseforge.md) 与
+> [curseforge-description.md](curseforge-description.md)。
+
 ## 一、GitHub：需要上传哪些文件
 
 仓库里**只保留源码与构建脚本**，构建产物和本地缓存不进仓库（`.gitignore` 已覆盖）。
 
-### 必须提交（共 30 个文件，约 158 KB）
+### 必须提交（共 32 个文件，约 171 KB）
 
 ```
 .gitattributes                 换行策略（gradlew 用 LF、.bat/.ps1 用 CRLF、png/jar 视为二进制）
@@ -34,6 +37,8 @@ gradle/wrapper/gradle-wrapper.properties
 docs/layout-preview.png        文档用布局示意图
 docs/icon-512.png              平台用 512x512 图标
 docs/publishing.md             本文件
+docs/curseforge.md             CurseForge 上传步骤（填表值、依赖关系、常见问题）
+docs/curseforge-description.md CurseForge 描述正文（英/中双语，整份粘贴）
 .github/workflows/build.yml    CI
 src/main/java/com/nyalium/cttshieldindicator/*.java        5 个类（含 Mod Menu 集成与设置界面）
 src/main/resources/fabric.mod.json
@@ -203,5 +208,15 @@ so it works in singleplayer, on servers, everywhere.
 - [ ] GitHub Release 打了 tag `v1.1.0` 并附 jar
 - [ ] 平台里把 Game version 勾成 `26.3`、Loader 勾成 `Fabric`、Environment 选 `Client`
 - [ ] 平台页面的 Source / Issues 填 GitHub 地址
-- [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）
+- [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）；Mod Menu 标为 Optional
 - [ ] 平台发布后，把 Modrinth / CurseForge 链接补进两个 README 的「相关链接」段
+
+## 五、CurseForge
+
+单独一份操作单：[curseforge.md](curseforge.md)。要点：
+
+- 只传 `ctt_shield_indicator-1.1.0.jar`，**不传** `-sources.jar`；
+- 头像用 `docs/icon-512.png`，Gallery 用 `docs/layout-preview.png`；
+- 依赖关系：`Fabric API` = Required，`Mod Menu` = Optional；
+- 描述正文用 [curseforge-description.md](curseforge-description.md)，整份粘贴；
+- CurseForge 的 game version 列表是人工维护的，**先确认里面有 `26.3`** 再上传。
