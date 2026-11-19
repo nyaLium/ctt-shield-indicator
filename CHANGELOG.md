@@ -2,6 +2,40 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)，格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)。
 
+## [1.1.0] - 2026-11-19
+
+加入游戏内设置界面，并精简可配置项。
+
+### 新增
+
+- **Mod Menu 集成**：游戏内「模组 → CTT Shield Indicator → 配置」即可调整设置，
+  带「恢复默认」按钮，关闭界面自动写回配置文件。Mod Menu 是可选依赖，未安装时照常运行。
+- 设置界面的中英文文本（`assets/ctt_shield_indicator/lang/{en_us,zh_cn}.json`）。
+
+### 变更
+
+- 设置项精简：
+  - 移除「显示计量条」（`showMeter`）——`enabled` 已能完全替代；
+  - 移除「高度」（`heightSlots`）——高度始终按纹理 52:128 自动计算，避免误操作；
+  - 移除「绘制方式」（`meterMode`）——只保留纹理绘制；
+  - `widthSlots` 重命名为 **`scale`（缩放比例）**。
+- 设置界面的数值项改为**滑块**：缩放比例 0.60–2.50（步进 0.05）、间距 0–20 px（步进 1）。
+- 删除模型模式所需的资源（4 个 item model 定义、5 个 meter 模型、4 张 `minecraft:` 命名空间纹理），
+  jar 从 46.7 KB 降到 36.3 KB。
+
+### 配置文件
+
+```json
+{
+  "enabled": true,
+  "scale": 1.1,
+  "gapAboveActionBar": 2
+}
+```
+
+旧配置里的 `showMeter` / `heightSlots` / `meterMode` / `widthSlots` 会被忽略；
+`widthSlots` 不会自动迁移到 `scale`，旧值会回到默认 1.1。
+
 ## [1.0.0] - 2026-11-19
 
 首个发布版本，适配 Minecraft 26.3 / Fabric。
@@ -14,11 +48,9 @@
   耐久损失 ≥80% → `meter_0`，≥60% → `meter_1`，≥40% → `meter_2`，其余 → `meter_3`。
 - 耐久满时不显示；仅在副手显示，主手 / 快捷栏 / 背包不触发。
 - 位置固定在 actionbar 文字上方（可配置间距），不遮挡也不被遮挡。
-- 尺寸以“纹理可见内容 52×128”为基准：可见宽度 = 槽位格 20px × `scale`（默认 1.1），高度始终按 52:128 自动。
+- 尺寸以“纹理可见内容 52×128”为基准：宽度 = 槽位格 20px × 比例，高度按比例或单独指定。
 - 水平对齐副手**物品格**中心（`center∓109`），不是 29 宽的外框中心。
-- `config/ctt_shield_indicator.json` 配置：`enabled` / `scale` / `gapAboveActionBar`。
-- **Mod Menu 集成**：游戏内「模组 → CTT Shield Indicator → 配置」用滑块调整缩放比例与间距，带「恢复默认」按钮，关闭界面自动写回配置文件。Mod Menu 是可选依赖，未安装时照常运行。
-- 中英文界面文本（`assets/ctt_shield_indicator/lang/{en_us,zh_cn}.json`）。
+- `config/ctt_shield_indicator.json` 配置。
 - 无需服务端安装任何数据包或 Mod。
 
 ### 技术说明

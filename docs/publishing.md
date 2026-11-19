@@ -59,7 +59,7 @@ src/main/resources/assets/**   4 张计量条纹理 + 图标 + 2 个 lang
 `https://github.com/nyaLium/ctt-shield-indicator.git`，只差推送：
 
 ```bash
-cd "CTT - Shield Enhancing v1.0 - 26.3 Client Mod"
+cd "CTT - Shield Enhancing v1.1 - 26.3 Client Mod"
 git push -u origin main
 ```
 
@@ -87,21 +87,21 @@ git push -u origin main
 ### 打 tag 发 Release
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.1.0
+git push origin v1.1.0
 ```
 
 然后到 https://github.com/nyaLium/ctt-shield-indicator/releases/new ：
-选 tag `v1.0.0` → 上传 `build/libs/ctt_shield_indicator-1.0.0.jar` → 正文粘贴 `CHANGELOG.md` 的 1.0.0 段
+选 tag `v1.1.0` → 上传 `build/libs/ctt_shield_indicator-1.1.0.jar` → 正文粘贴 `CHANGELOG.md` 的 1.1.0 段
 → Publish。Release 页面链接即下载地址。
 
 ## 二、要发布的文件
 
-只上传**一个文件**：`build/libs/ctt_shield_indicator-1.0.0.jar`（40 KB 左右）。
+只上传**一个文件**：`build/libs/ctt_shield_indicator-1.1.0.jar`（36 KB 左右）。
 
 - Modrinth / CurseForge 都**不要**上传 `-sources.jar`。
 - 平台会自动生成下载文件名，无需改名。
-- GitHub 上请走 **Releases**（打 tag `v1.0.0`，附上同一个 jar + `CHANGELOG.md` 内容），
+- GitHub 上请走 **Releases**（打 tag `v1.1.0`，附上同一个 jar + `CHANGELOG.md` 内容），
   不要把 jar 提交进仓库。
 
 ## 三、平台元数据（照抄即可）
@@ -111,7 +111,7 @@ git push origin v1.0.0
 | 名称 | `CTT Shield Indicator` |
 | 摘要（≤256 字符） | `Client-side shield durability gauge above the offhand slot. Reads custom_data (shield / shieldAbility) and damage; no server-side datapack needed.` |
 | 中文摘要 | `纯客户端：副手物品带有 shield/shieldAbility 时，在副手槽上方显示盾牌耐久计量条，无需服务端。` |
-| 版本号 | `1.0.0` |
+| 版本号 | `1.1.0` |
 | 支持的 MC 版本 | `26.3`（只写这一个） |
 | 加载器 | `Fabric` |
 | 环境 | **Client only**（`fabric.mod.json` 里是 `"environment": "client"`） |
@@ -200,7 +200,7 @@ so it works in singleplayer, on servers, everywhere.
 - [ ] jar 内 `fabric.mod.json` 的 `contact` 三个链接可打开（可用 `unzip -p <jar> fabric.mod.json` 检查）
 - [ ] README 的徽章、Source / Releases / Issues 链接可打开
 - [ ] 已在真实客户端里验证过（进世界看指示器位置/大小）
-- [ ] GitHub Release 打了 tag `v1.0.0` 并附 jar
+- [ ] GitHub Release 打了 tag `v1.1.0` 并附 jar
 - [ ] 平台里把 Game version 勾成 `26.3`、Loader 勾成 `Fabric`、Environment 选 `Client`
 - [ ] 平台页面的 Source / Issues 填 GitHub 地址
 - [ ] 依赖里声明 Fabric API（否则用户会遇到启动报错）
