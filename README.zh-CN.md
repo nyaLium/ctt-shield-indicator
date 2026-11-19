@@ -1,4 +1,4 @@
-# CTT Shield Indicator（1.21.4 客户端 Mod）
+# CTT Shield Indicator（26.3 客户端 Mod）
 
 [![build](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml/badge.svg)](https://github.com/nyaLium/ctt-shield-indicator/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -7,14 +7,11 @@
 
 | 项目 | 值 |
 | --- | --- |
-| Minecraft | 1.21.4 |
-| 加载器 | Fabric Loader 0.16.9+ / Fabric API 0.119.4+1.21.4 |
-| Mod Menu（可选） | 13.0.0+，只有游戏内设置界面需要 |
+| Minecraft | 26.3 |
+| 加载器 | Fabric Loader 0.20.1+ / Fabric API 0.166.2+26.3 |
+| Mod Menu（可选） | 21.0.0+，只有游戏内设置界面需要 |
 | 环境 | 纯客户端（`"environment": "client"`） |
-| Java | 21 |
-
-> 这是本项目的 **`1.21.4` 分支**，`main` 分支对应 Minecraft 26.3 版本。
-> 功能与配置格式完全一致，只有构建目标和 HUD 挂载方式不同。
+| Java | 25 |
 
 ## 功能
 
@@ -41,7 +38,7 @@
   所以物品格中心是 `center∓109`。（29 宽的外框 sprite 从 `center-120` 开始，它的中心 `center∓105.5`
   会偏 3.5px。）
 - 把 `position` 设为 `"center"` 时，指示器放在整个界面的正中（水平、垂直都居中，不是 actionbar 上方），
-  此时间距配置不生效；无论哪种模式，都会再叠加该位置的 `offset`，并保证整条指示器留在屏幕内。
+  此时间距配置不生效；无论哪种模式，都会再叠加 `horizontalOffset`，并保证整条指示器留在屏幕内。
 - actionbar 文本画在 `translate(0, guiHeight-68)` 之后、本地 `y=-4` 处 → 文本顶边 ≈ `guiHeight-72`。
 - 指示器底端 = `guiHeight - 72 - gapAboveActionBar`（默认 2px），所以它悬在 actionbar 上方，
   既不会被 actionbar 文字盖住，也不遮挡文字。
@@ -51,7 +48,7 @@
 
 ## 构建
 
-需要 JDK 21。仓库带 Gradle wrapper（9.9.1）：
+需要 JDK 25。仓库带 Gradle wrapper（9.9.1）：
 
 ```bash
 ./gradlew build
@@ -59,7 +56,7 @@
 
 ## 安装
 
-1. Fabric Loader 0.16.9+ 与 Fabric API 0.119.4+1.21.4（客户端）。
+1. Fabric Loader 0.20.1+ 与 Fabric API 0.166.2+26.3（客户端）。
 2. jar 放进 `.minecraft/mods`。
 
 ## 配置
@@ -98,7 +95,7 @@
 
 ```
 src/main/java/com/nyalium/cttshieldindicator/
-    CttShieldIndicatorClient.java   入口，注册 HUD 渲染回调
+    CttShieldIndicatorClient.java   入口，注册 HUD 元素
     ShieldIndicatorHud.java         判定 + 绘制
     ShieldIndicatorConfig.java      config/ctt_shield_indicator.json（读/写/恢复默认）
     ModMenuIntegration.java         Mod Menu 入口点（可选依赖）

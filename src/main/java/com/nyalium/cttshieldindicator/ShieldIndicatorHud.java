@@ -1,21 +1,21 @@
 package com.nyalium.cttshieldindicator;
 
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import org.joml.Matrix3x2fStack;
 
 /**
- * 副手槽位上方（或屏幕正中）的盾牌计量条。
+ * 副手槽位上方的耐久计量条（盾牌指示器）。
  *
  * <p>判定规则（全部只在客户端读取，不需要服务端配合）：</p>
  * <ol>
@@ -30,19 +30,30 @@ import net.minecraft.util.Identifier;
  * 高度按 52:128 自动得出。</p>
  *
  * <p>位置由 {@link ShieldIndicatorConfig#position} 决定：默认对齐副手<b>物品格</b>的中心
- * （原版把 16x16 物品画在 {@code center-117}，中心为 {@code center-109}）；垂直方向贴在
- * actionbar 上方，间距由 {@link ShieldIndicatorConfig#gapAboveActionBar} 控制。设为
- * {@link ShieldIndicatorConfig.Position#CENTER} 时改放在整个界面的正中（水平、垂直都居中），
- * 此时间距配置不生效。两种模式都会再叠加 {@link ShieldIndicatorConfig.Profile#offset} 的像素偏移，
- * 并限制在屏幕范围内。透明度通过 {@code drawTexture} 的 ARGB 顶点色实现。</p>
+ * （原版把 16x16 物品画在 {@code center-117}，中心为 {@code center-109}），不是 29 宽的外框中心
+ * （{@code center-105.5}）；垂直方向贴在 actionbar 上方，间距由
+ * {@link ShieldIndicatorConfig#gapAboveActionBar} 控制。设为
+ * {@link ShieldIndicatorConfig.Position#CENTER} 时，指示器改放在整个界面的正中（水平、垂直都居中），
+ * 此时间距配置不生效。两种模式都会再叠加 {@link ShieldIndicatorConfig#horizontalOffset} 的像素偏移，
+ * 并限制在屏幕范围内。</p>
+ *
+ * <p>档位与资源包 {@code items/shield_indicator/enable/*.json} 中的 {@code range_dispatch} 对应
+ * （{@code RangeSelectItemModel} 取“阈值 &le; 值”的最后一项）。由于不再绘制盾牌图标，
+ * 资源包里 {@code 0 < r < 0.2} 那档“只有盾牌、没有计量条”的状态并入 {@code meter_3}：</p>
+ * <pre>
+ *   damage / max_damage &gt;= 0.8  -&gt; meter_0（0 格）
+ *   damage / max_damage &ge; 0.6  -&gt; meter_1（1 格）
+ *   damage / max_damage &ge; 0.4  -&gt; meter_2（2 格）
+ *   damage / max_damage &lt; 0.4   -&gt; meter_3（3 格，含 0~0.2 段）
+ * </pre>
  */
-public final class ShieldIndicatorHud implements HudRenderCallback {
+public final class ShieldIndicatorHud implements HudElement {
     /** 与资源包 {@code textures/item/shields/meter_N.png} 同一份纹理。 */
     private static final Identifier[] METER_TEXTURES = new Identifier[]{
-            Identifier.of(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_0.png"),
-            Identifier.of(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_1.png"),
-            Identifier.of(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_2.png"),
-            Identifier.of(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_3.png")
+            Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_0.png"),
+            Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_1.png"),
+            Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_2.png"),
+            Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_3.png")
     };
 
     /** 纹理画布 136x136。 */
@@ -59,17 +70,17 @@ public final class ShieldIndicatorHud implements HudRenderCallback {
     private static final int SLOT_CELL_SIZE = 20;
 
     @Override
-    public void onHudRender(DrawContext context, RenderTickCounter tickCounter) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         ShieldIndicatorConfig config = ShieldIndicatorConfig.get();
         if (!config.enabled) {
             return;
         }
-        MinecraftClient client = MinecraftClient.getInstance();
-        ClientPlayerEntity player = client.player;
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
         if (player == null) {
             return;
         }
-        ItemStack offhand = player.getOffHandStack();
+        ItemStack offhand = player.getOffhandItem();
         if (offhand.isEmpty() || !hasShieldFlag(offhand)) {
             return;
         }
@@ -77,15 +88,15 @@ public final class ShieldIndicatorHud implements HudRenderCallback {
         if (maxDamage <= 0) {
             return;
         }
-        int damage = offhand.getDamage();
+        int damage = offhand.getDamageValue();
         if (damage <= 0) {
             // 耐久满时不显示指示器
             return;
         }
         float ratio = (float) damage / (float) maxDamage;
 
-        int guiWidth = context.getScaledWindowWidth();
-        int guiHeight = context.getScaledWindowHeight();
+        int guiWidth = graphics.guiWidth();
+        int guiHeight = graphics.guiHeight();
         int center = guiWidth / 2;
 
         // 当前位置各自的一套参数：缩放比例 + 水平偏移。
@@ -107,8 +118,8 @@ public final class ShieldIndicatorHud implements HudRenderCallback {
             anchorX = center;
             bottomY = guiHeight / 2.0f + height / 2.0f;
         } else {
-            Arm offhandArm = player.getMainArm().getOpposite();
-            anchorX = offhandArm == Arm.LEFT ? center - 109.0f : center + 109.0f;
+            HumanoidArm offhandArm = player.getMainArm().getOpposite();
+            anchorX = offhandArm == HumanoidArm.LEFT ? center - 109.0f : center + 109.0f;
             bottomY = guiHeight - 72 - config.gapAboveActionBar;
         }
 
@@ -118,37 +129,38 @@ public final class ShieldIndicatorHud implements HudRenderCallback {
         anchorX = Math.max(halfWidth + 2.0f, Math.min(guiWidth - halfWidth - 2.0f, anchorX));
         bottomY = Math.max(height + 2.0f, Math.min(guiHeight - 2.0f, bottomY));
 
-        // ARGB 颜色里的 alpha 实现整体透明度。
+        // ARGB 颜色里的 alpha 实现整体透明度（0xFF000000 起算，白色 + alpha）。
         int alpha = Math.round(255.0f * Math.max(0.0f, Math.min(1.0f, config.opacity)));
         int color = (alpha << 24) | 0x00FFFFFF;
 
-        drawTexture(context, METER_TEXTURES[meterIndex(ratio)], anchorX, bottomY, scaleX, scaleY, color);
+        drawTexture(graphics, METER_TEXTURES[meterIndex(ratio)], anchorX, bottomY, scaleX, scaleY, color);
     }
 
     /**
      * 以「可见内容」为基准绘制：内容底边中点对齐 {@code (centerX, bottomY)}。
      *
      * <p>画布比内容大一圈（左 42、上 4、右 5、下 4 像素），所以按画布坐标反推绘制位置：
-     * 本地左上角 = {@code (centerX - 68, bottomY - 132)}，再靠矩阵缩放把内容拉到目标尺寸。</p>
+     * 本地左上角 = {@code (centerX - 68, bottomY - 132)}，再靠 pose 缩放把内容拉到目标尺寸。</p>
      */
-    private static void drawTexture(DrawContext context, Identifier texture,
+    private static void drawTexture(GuiGraphicsExtractor graphics, Identifier texture,
                                     float centerX, float bottomY, float scaleX, float scaleY, int color) {
-        MatrixStack matrices = context.getMatrices();
-        matrices.push();
-        matrices.translate(centerX, bottomY, 0.0f);
-        matrices.scale(scaleX, scaleY, 1.0f);
-        matrices.translate(-centerX, -bottomY, 0.0f);
+        Matrix3x2fStack pose = graphics.pose();
+        pose.pushMatrix();
+        pose.translate(centerX, bottomY);
+        pose.scale(scaleX, scaleY);
+        pose.translate(-centerX, -bottomY);
         int x = Math.round(centerX - CANVAS / 2.0f);
         int y = Math.round(bottomY - CONTENT_BOTTOM);
-        context.drawTexture(
-                RenderLayer::getGuiTextured,
+        graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
                 texture,
                 x, y,
                 0.0f, 0.0f,
                 CANVAS, CANVAS,
                 CANVAS, CANVAS,
+                CANVAS, CANVAS,
                 color);
-        matrices.pop();
+        pose.popMatrix();
     }
 
     /** 与 range_dispatch 的阈值一一对应。 */
@@ -166,11 +178,11 @@ public final class ShieldIndicatorHud implements HudRenderCallback {
     }
 
     private static boolean hasShieldFlag(ItemStack stack) {
-        NbtComponent customData = stack.get(DataComponentTypes.CUSTOM_DATA);
-        if (customData == null) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null || customData.isEmpty()) {
             return false;
         }
-        NbtCompound tag = customData.copyNbt();
-        return tag.getBoolean("shield") || tag.getBoolean("shieldAbility");
+        CompoundTag tag = customData.copyTag();
+        return tag.getBooleanOr("shield", false) || tag.getBooleanOr("shieldAbility", false);
     }
 }
