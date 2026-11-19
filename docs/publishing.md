@@ -16,7 +16,7 @@ Modrinth / CurseForge 发布后，把对应链接补进 README 的 `## Links` �
 
 仓库里**只保留源码与构建脚本**，构建产物和本地缓存不进仓库（`.gitignore` 已覆盖）。
 
-### 必须提交（共 43 个文件，约 168 KB）
+### 必须提交（共 30 个文件，约 158 KB）
 
 ```
 .gitattributes                 换行策略（gradlew 用 LF、.bat/.ps1 用 CRLF、png/jar 视为二进制）
