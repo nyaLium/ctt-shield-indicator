@@ -2,7 +2,7 @@
 
 **English** · [中文](README.zh-CN.md) · [Changelog](CHANGELOG.md) · [Publishing](docs/publishing.md) · [MIT License](LICENSE)
 
-| | |
+| Requirement | Version |
 | --- | --- |
 | Minecraft | 26.3 |
 | Loader | Fabric Loader 0.20.1+ / Fabric API 0.166.2+26.3 |
