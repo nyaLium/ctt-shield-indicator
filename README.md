@@ -47,7 +47,8 @@
 - The gauge bottom sits at `guiHeight - 72 - gapAboveActionBar` (default 2 px), so it floats just
   above the actionbar — never covered by the text, never covering it.
 
-![Layout preview — dashed red: visible content 22×54.2; dashed blue: the 20×20 slot cell](docs/layout-preview.png)
+![offhand_indicator](img/offhand.png)
+![center_indicator](img/center.png)
 
 ## Building
 
