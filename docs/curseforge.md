@@ -23,7 +23,7 @@ CurseForge 专用的逐步操作单。通用元数据见 [publishing.md](publish
 | 字段 | 值 |
 | --- | --- |
 | Project name | `CTT Shield Indicator` |
-| Summary | `Client-side shield durability gauge above the offhand slot. Reads custom_data (shield / shieldAbility); nothing to install on the server.` |
+| Summary | `A small gauge above your offhand slot that shrinks as your shield wears down — see it coming before it breaks. Client-side, works on any server.` |
 | Primary category | `Utility & QoL` |
 | Secondary category | `Armor, Tools, and Weapons`（该分类不存在就留空） |
 | License | `MIT License`（CurseForge 内置选项，语义与仓库里的 `LICENSE` 一致） |
