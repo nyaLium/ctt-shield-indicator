@@ -1,9 +1,5 @@
 package com.nyalium.cttshieldindicator;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -15,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import org.joml.Matrix3x2fStack;
 
@@ -30,10 +25,9 @@ import org.joml.Matrix3x2fStack;
  *   <li>物品只在副手时显示，主手/背包内不显示。</li>
  * </ol>
  *
- * <p>尺寸按<b>纹理的可见内容</b>算，而不是把 136x136 的画布塞进某个方框：
- * {@code meter_N.png} 里真正有像素的区域是 {@code x 42..93 / y 4..131}，即 52x128。
- * 所以「可见宽度」= {@code 20px（原版一格） × widthSlots}，可见高度默认按 52:128 的比例自动得出；
- * 想要压扁一点可以显式给 {@code heightSlots}。</p>
+ * <p>尺寸按纹理的<b>可见内容</b>算：{@code meter_N.png} 里真正有像素的区域是
+ * {@code x 42..93 / y 4..131}（52x128），所以可见宽度 = {@code 20px（一格）× scale}，
+ * 高度按 52:128 自动得出。</p>
  *
  * <p>水平对齐的是副手<b>物品格</b>的中心（原版把 16x16 物品画在 {@code center-117}，中心为
  * {@code center-109}），不是 29 宽的外框中心（{@code center-105.5}）。</p>
@@ -49,7 +43,7 @@ import org.joml.Matrix3x2fStack;
  * </pre>
  */
 public final class ShieldIndicatorHud implements HudElement {
-    /** 纹理模式的计量条：与资源包 {@code textures/item/shields/meter_N.png} 同一份。 */
+    /** 与资源包 {@code textures/item/shields/meter_N.png} 同一份纹理。 */
     private static final Identifier[] METER_TEXTURES = new Identifier[]{
             Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_0.png"),
             Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, "textures/gui/meter_1.png"),
@@ -69,16 +63,11 @@ public final class ShieldIndicatorHud implements HudElement {
 
     /** 原版快捷栏一格的显示尺寸：格距 20px，物品 16px 居中、四周各内缩 2px。 */
     private static final int SLOT_CELL_SIZE = 20;
-    /** 模型模式下 meter_N 模型按 16x16 模型空间设计。 */
-    private static final int MODEL_BASE = 16;
-
-    private static final Map<String, ItemStack> MODEL_STACKS = new HashMap<>();
-    private static final Set<String> MISSING_DEFINITIONS = new HashSet<>();
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         ShieldIndicatorConfig config = ShieldIndicatorConfig.get();
-        if (!config.enabled || !config.showMeter) {
+        if (!config.enabled) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
@@ -112,30 +101,18 @@ public final class ShieldIndicatorHud implements HudElement {
         // actionbar 文本画在 translate(0, guiHeight-68) 之后、本地 y=-4 处，文本顶边约 guiHeight-72。
         float bottomY = guiHeight - 72 - config.gapAboveActionBar;
 
-        // 可见内容的宽度 = 一格 × widthSlots；高度默认按 52:128 自动。
-        float slotsW = config.widthSlots > 0.0f ? config.widthSlots : 1.0f;
-        float width = Math.max(1.0f, Math.min(400.0f, SLOT_CELL_SIZE * slotsW));
-        float height = config.heightSlots > 0.0f
-                ? Math.max(1.0f, Math.min(600.0f, SLOT_CELL_SIZE * config.heightSlots))
-                : width * ((float) CONTENT_H / (float) CONTENT_W);
-
+        // 可见内容宽度 = 一格 × 缩放比例；高度按 52:128 自动。
+        float slots = config.scale > 0.0f ? config.scale : 1.0f;
+        float width = Math.max(1.0f, Math.min(400.0f, SLOT_CELL_SIZE * slots));
+        float height = width * ((float) CONTENT_H / (float) CONTENT_W);
         float scaleX = width / (float) CONTENT_W;
         float scaleY = height / (float) CONTENT_H;
-        int meterIndex = meterIndex(ratio);
 
-        if ("model".equalsIgnoreCase(config.meterMode)) {
-            ItemStack meterModel = stackFor("meter/" + meterIndex);
-            if (meterModel != null) {
-                // 模型模式保持等比，用宽度比例作为统一缩放
-                drawModel(graphics, meterModel, slotCenterX, bottomY, scaleX);
-                return;
-            }
-        }
-        drawTexture(graphics, METER_TEXTURES[meterIndex], slotCenterX, bottomY, scaleX, scaleY);
+        drawTexture(graphics, METER_TEXTURES[meterIndex(ratio)], slotCenterX, bottomY, scaleX, scaleY);
     }
 
     /**
-     * 以「可见内容」为基准绘制纹理：内容底边中点对齐 {@code (centerX, bottomY)}。
+     * 以「可见内容」为基准绘制：内容底边中点对齐 {@code (centerX, bottomY)}。
      *
      * <p>画布比内容大一圈（左 42、上 4、右 5、下 4 像素），所以按画布坐标反推绘制位置：
      * 本地左上角 = {@code (centerX - 68, bottomY - 132)}，再靠 pose 缩放把内容拉到目标尺寸。</p>
@@ -160,17 +137,6 @@ public final class ShieldIndicatorHud implements HudElement {
         pose.popMatrix();
     }
 
-    private static void drawModel(GuiGraphicsExtractor graphics, ItemStack stack,
-                                  float centerX, float bottomY, float scale) {
-        Matrix3x2fStack pose = graphics.pose();
-        pose.pushMatrix();
-        pose.translate(centerX, bottomY);
-        pose.scale(scale, scale);
-        pose.translate(-centerX, -bottomY);
-        graphics.item(stack, Math.round(centerX - MODEL_BASE / 2.0f), Math.round(bottomY - MODEL_BASE));
-        pose.popMatrix();
-    }
-
     /** 与 range_dispatch 的阈值一一对应。 */
     private static int meterIndex(float ratio) {
         if (ratio >= 0.8f) {
@@ -192,25 +158,5 @@ public final class ShieldIndicatorHud implements HudElement {
         }
         CompoundTag tag = customData.copyTag();
         return tag.getBooleanOr("shield", false) || tag.getBooleanOr("shieldAbility", false);
-    }
-
-    private static ItemStack stackFor(String path) {
-        ItemStack cached = MODEL_STACKS.get(path);
-        if (cached != null) {
-            return cached;
-        }
-        if (MISSING_DEFINITIONS.contains(path)) {
-            return null;
-        }
-        Identifier definition = Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID,
-                "items/" + path + ".json");
-        if (Minecraft.getInstance().getResourceManager().getResource(definition).isEmpty()) {
-            MISSING_DEFINITIONS.add(path);
-            return null;
-        }
-        ItemStack stack = new ItemStack(Items.PAPER);
-        stack.set(DataComponents.ITEM_MODEL, Identifier.fromNamespaceAndPath(CttShieldIndicatorClient.MOD_ID, path));
-        MODEL_STACKS.put(path, stack);
-        return stack;
     }
 }

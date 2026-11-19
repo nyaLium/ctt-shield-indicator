@@ -1,13 +1,7 @@
 {
   "ctt_shield_indicator.config.title": "Shield Indicator Settings",
   "ctt_shield_indicator.config.enabled": "Enabled",
-  "ctt_shield_indicator.config.show_meter": "Show gauge",
-  "ctt_shield_indicator.config.width": "Width (slots)",
-  "ctt_shield_indicator.config.height": "Height (slots)",
-  "ctt_shield_indicator.config.gap": "Gap above actionbar",
-  "ctt_shield_indicator.config.meter_mode": "Gauge render mode",
-  "ctt_shield_indicator.config.reset": "Reset to defaults",
-  "ctt_shield_indicator.mode.texture": "Texture",
-  "ctt_shield_indicator.mode.model": "Model",
-  "ctt_shield_indicator.value.auto": "Auto"
+  "ctt_shield_indicator.config.scale": "Scale: %s×",
+  "ctt_shield_indicator.config.gap": "Gap above actionbar: %spx",
+  "ctt_shield_indicator.config.reset": "Reset to defaults"
 }

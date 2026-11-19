@@ -1,8 +1,10 @@
 package com.nyalium.cttshieldindicator;
 
-import java.util.List;
 import java.util.Locale;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleFunction;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
@@ -11,20 +13,25 @@ import net.minecraft.network.chat.Component;
 /**
  * Mod Menu 里的设置界面。
  *
- * <p>直接改 {@link ShieldIndicatorConfig#get()} 里的字段，HUD 每帧读取，所以改完立刻生效；
- * 关闭界面时写回磁盘。</p>
+ * <p>数值项用滑块；直接改 {@link ShieldIndicatorConfig#get()} 里的字段，HUD 每帧读取，
+ * 所以拖动即时生效；关闭界面时写回磁盘。</p>
  */
 public final class ShieldIndicatorConfigScreen extends Screen {
     private static final Component TITLE = Component.translatable("ctt_shield_indicator.config.title");
     private static final int ROW_WIDTH = 220;
     private static final int ROW_HEIGHT = 20;
-    private static final int ROW_GAP = 24;
-    private static final int TOP = 36;
+    private static final int ROW_GAP = 26;
+    private static final int TOP = 40;
 
-    private static final List<Float> WIDTH_VALUES = List.of(0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.4f, 1.6f, 2.0f);
-    private static final List<Float> HEIGHT_VALUES = List.of(0.0f, 1.0f, 1.2f, 1.5f, 1.8f, 2.0f, 2.5f, 3.0f);
-    private static final List<Integer> GAP_VALUES = List.of(0, 2, 4, 6, 8, 10, 14, 20);
-    private static final List<String> MODE_VALUES = List.of("texture", "model");
+    /** 缩放比例的可调范围。 */
+    private static final double SCALE_MIN = 0.6D;
+    private static final double SCALE_MAX = 2.5D;
+    private static final double SCALE_STEP = 0.05D;
+
+    /** 与 actionbar 间距的可调范围。 */
+    private static final double GAP_MIN = 0D;
+    private static final double GAP_MAX = 20D;
+    private static final double GAP_STEP = 1D;
 
     private final Screen parent;
 
@@ -46,61 +53,31 @@ public final class ShieldIndicatorConfigScreen extends Screen {
                         (button, value) -> config.enabled = value));
         y += ROW_GAP;
 
-        // 显示计量条
-        addRenderableWidget(CycleButton.onOffBuilder(config.showMeter)
-                .create(left, y, ROW_WIDTH, ROW_HEIGHT,
-                        Component.translatable("ctt_shield_indicator.config.show_meter"),
-                        (button, value) -> config.showMeter = value));
-        y += ROW_GAP;
-
-        // 宽度（以槽位格为单位）
-        addRenderableWidget(CycleButton.<Float>builder(ShieldIndicatorConfigScreen::slotsLabel, config.widthSlots)
-                .withValues(WIDTH_VALUES)
-                .create(left, y, ROW_WIDTH, ROW_HEIGHT,
-                        Component.translatable("ctt_shield_indicator.config.width"),
-                        (button, value) -> config.widthSlots = value));
-        y += ROW_GAP;
-
-        // 高度（0 = 自动按比例）
-        addRenderableWidget(CycleButton.<Float>builder(ShieldIndicatorConfigScreen::slotsLabel, config.heightSlots)
-                .withValues(HEIGHT_VALUES)
-                .create(left, y, ROW_WIDTH, ROW_HEIGHT,
-                        Component.translatable("ctt_shield_indicator.config.height"),
-                        (button, value) -> config.heightSlots = value));
+        // 缩放比例
+        addRenderableWidget(new ValueSlider(left, y, ROW_WIDTH, ROW_HEIGHT,
+                SCALE_MIN, SCALE_MAX, SCALE_STEP, config.scale,
+                value -> Component.translatable("ctt_shield_indicator.config.scale", String.format(Locale.ROOT, "%.2f", value)),
+                value -> config.scale = (float) value));
         y += ROW_GAP;
 
         // 与 actionbar 的间距
-        addRenderableWidget(CycleButton.<Integer>builder(v -> Component.literal(v + "px"), config.gapAboveActionBar)
-                .withValues(GAP_VALUES)
-                .create(left, y, ROW_WIDTH, ROW_HEIGHT,
-                        Component.translatable("ctt_shield_indicator.config.gap"),
-                        (button, value) -> config.gapAboveActionBar = value));
-        y += ROW_GAP;
+        addRenderableWidget(new ValueSlider(left, y, ROW_WIDTH, ROW_HEIGHT,
+                GAP_MIN, GAP_MAX, GAP_STEP, config.gapAboveActionBar,
+                value -> Component.translatable("ctt_shield_indicator.config.gap", String.format(Locale.ROOT, "%d", (int) Math.round(value))),
+                value -> config.gapAboveActionBar = (int) Math.round(value)));
+        y += ROW_GAP + 10;
 
-        // 绘制方式
-        addRenderableWidget(CycleButton.<String>builder(v -> Component.translatable("ctt_shield_indicator.mode." + v), config.meterMode)
-                .withValues(MODE_VALUES)
-                .create(left, y, ROW_WIDTH, ROW_HEIGHT,
-                        Component.translatable("ctt_shield_indicator.config.meter_mode"),
-                        (button, value) -> config.meterMode = value));
-        y += ROW_GAP + 8;
+        int half = (ROW_WIDTH - 8) / 2;
 
         // 恢复默认
         addRenderableWidget(Button.builder(Component.translatable("ctt_shield_indicator.config.reset"), button -> {
             ShieldIndicatorConfig.reset();
             rebuildWidgets();
-        }).bounds(left, y, (ROW_WIDTH - 8) / 2, ROW_HEIGHT).build());
+        }).bounds(left, y, half, ROW_HEIGHT).build());
 
         // 完成
         addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose())
-                .bounds(left + (ROW_WIDTH - 8) / 2 + 8, y, (ROW_WIDTH - 8) / 2, ROW_HEIGHT).build());
-    }
-
-    private static Component slotsLabel(float value) {
-        if (value <= 0.0f) {
-            return Component.translatable("ctt_shield_indicator.value.auto");
-        }
-        return Component.literal(String.format(Locale.ROOT, "%.2f", value));
+                .bounds(left + half + 8, y, half, ROW_HEIGHT).build());
     }
 
     @Override
@@ -114,5 +91,51 @@ public final class ShieldIndicatorConfigScreen extends Screen {
         ShieldIndicatorConfig.save();
         // 26.3 里屏幕由 Gui 管理（Screen#onClose 默认实现同样是调 gui.setScreen(null)）
         this.minecraft.gui.setScreen(this.parent);
+    }
+
+    /** 带数值标签的滑块：内部用 0..1 的归一化值，applyValue 时量化到 step 并回调。 */
+    private static final class ValueSlider extends AbstractSliderButton {
+        private final double min;
+        private final double max;
+        private final double step;
+        private final DoubleFunction<Component> label;
+        private final DoubleConsumer onChange;
+
+        ValueSlider(int x, int y, int width, int height, double min, double max, double step, double initial,
+                    DoubleFunction<Component> label, DoubleConsumer onChange) {
+            super(x, y, width, height, Component.empty(), (initial - min) / (max - min));
+            this.min = min;
+            this.max = max;
+            this.step = step;
+            this.label = label;
+            this.onChange = onChange;
+            updateMessage();
+        }
+
+        private double currentValue() {
+            double raw = this.min + (this.max - this.min) * this.value;
+            double snapped = Math.round(raw / this.step) * this.step;
+            return Math.max(this.min, Math.min(this.max, snapped));
+        }
+
+        @Override
+        protected void updateMessage() {
+            // 父类构造期间可能就会调用 updateMessage()，此时字段还没赋值
+            if (this.label == null) {
+                return;
+            }
+            setMessage(this.label.apply(currentValue()));
+        }
+
+        @Override
+        protected void applyValue() {
+            if (this.onChange == null) {
+                return;
+            }
+            double value = currentValue();
+            this.value = (value - this.min) / (this.max - this.min);
+            this.onChange.accept(value);
+            updateMessage();
+        }
     }
 }

@@ -17,28 +17,17 @@ public final class ShieldIndicatorConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static ShieldIndicatorConfig INSTANCE = new ShieldIndicatorConfig();
 
-    /** 总开关。 */
+    /** 总开关。关掉后指示器完全不显示。 */
     public boolean enabled = true;
 
-    /** 是否显示计量条；关掉后整个指示器不出现。 */
-    public boolean showMeter = true;
-
     /**
-     * 可见内容的宽度，单位是「原版槽位格」（20px）。
+     * 缩放比例：可见内容宽度 = 一格（20px）× 本值，高度按纹理 52:128 自动。
      * {@code 1.0} = 与槽位同宽；{@code 1.1} = 略宽一点（默认）。
      */
-    public float widthSlots = 1.1f;
-
-    /**
-     * 可见内容的高度，单位同上；{@code 0} = 按纹理 52:128 的比例自动。
-     */
-    public float heightSlots = 0.0f;
+    public float scale = 1.1f;
 
     /** 指示器底端距离 actionbar 文字顶部的额外间距（像素）。 */
     public int gapAboveActionBar = 2;
-
-    /** 计量条绘制方式：{@code texture} 或 {@code model}。 */
-    public String meterMode = "texture";
 
     public static ShieldIndicatorConfig get() {
         return INSTANCE;

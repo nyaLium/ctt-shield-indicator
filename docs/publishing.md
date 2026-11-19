@@ -37,7 +37,7 @@ docs/publishing.md             本文件
 .github/workflows/build.yml    CI
 src/main/java/com/nyalium/cttshieldindicator/*.java        5 个类（含 Mod Menu 集成与设置界面）
 src/main/resources/fabric.mod.json
-src/main/resources/assets/**   4 个 item model 定义 / 5 个模型 / 9 张纹理 / 2 个 lang
+src/main/resources/assets/**   4 张计量条纹理 + 图标 + 2 个 lang
 ```
 
 ### 不要提交（已被忽略）
@@ -139,7 +139,7 @@ git push origin v1.0.0
 - 只在副手显示；主手 / 快捷栏 / 背包不触发
 - 耐久满时不显示；耐久越少格子越少（3 → 0）
 - 位置固定在 actionbar 文字上方，不遮挡也不被遮挡
-- 尺寸以纹理可见内容（52×128）为基准，宽度 = 一格 × `widthSlots`（默认 1.1）
+- 尺寸以纹理可见内容（52×128）为基准，宽度 = 一格 × `scale`（默认 1.1，高度自动按比例）
 - 完全可配置：`config/ctt_shield_indicator.json`
 
 ## 前置
@@ -174,7 +174,7 @@ so it works in singleplayer, on servers, everywhere.
 - Offhand only — main hand / hotbar / inventory never trigger it
 - Hidden at full durability; fewer cells as durability drops (3 → 0)
 - Anchored just above the actionbar text, never overlapping it
-- Sized from the texture's visible content (52×128): width = one slot × `widthSlots` (default 1.1)
+- Sized from the texture's visible content (52x128): width = one slot x `scale` (default 1.1); height follows the ratio
 - Fully configurable via `config/ctt_shield_indicator.json`
 
 ## Requirements

@@ -61,22 +61,18 @@
 ```json
 {
   "enabled": true,
-  "showMeter": true,
-  "widthSlots": 1.1,
-  "heightSlots": 0.0,
-  "gapAboveActionBar": 2,
-  "meterMode": "texture"
+  "scale": 1.1,
+  "gapAboveActionBar": 2
 }
 ```
 
 | 字段 | 说明 |
 | --- | --- |
-| `enabled` | 总开关 |
-| `showMeter` | 关掉后整个指示器不出现 |
-| `widthSlots` | **可见内容**宽度 = 槽位格 20px × 本值。`1.0` 与槽位同宽，`1.1` 略宽（默认），`1.5` 更宽 |
-| `heightSlots` | **可见内容**高度；`0` = 按 52:128 自动（宽 1.1 → 高 ≈54.2）。想压扁给 `1.5` → 22×30 |
+| `enabled` | 总开关，关掉后什么都不画 |
+| `scale` | 缩放比例：可见内容宽度 = 一格 20px × 本值。`1.0` 与槽位同宽，`1.1` 略宽（默认）；高度始终按纹理 52:128 自动 |
 | `gapAboveActionBar` | 底端与 actionbar 文字顶部的间距（像素） |
-| `meterMode` | `texture`（默认）按上面尺寸绘制 PNG；`model` 直接渲染资源包的 `meter_N` 模型 |
+
+游戏内（Mod Menu）这两个数值都是滑块，可以边看效果边拖。
 
 改完保存后重新进入世界/重开游戏生效。
 
@@ -91,8 +87,7 @@ src/main/java/com/nyalium/cttshieldindicator/
     ShieldIndicatorConfigScreen.java  游戏内设置界面
 src/main/resources/
     fabric.mod.json
-    assets/ctt_shield_indicator/    item model 定义（meter）、计量条纹理、en_us/zh_cn 语言文件
-    assets/minecraft/               meter 模型与纹理（meterMode=model 用）
+    assets/ctt_shield_indicator/    计量条纹理、图标、en_us/zh_cn 语言文件
 docs/                               布局示意图、发布说明
 ```
 

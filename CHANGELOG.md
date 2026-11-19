@@ -14,13 +14,10 @@
   耐久损失 ≥80% → `meter_0`，≥60% → `meter_1`，≥40% → `meter_2`，其余 → `meter_3`。
 - 耐久满时不显示；仅在副手显示，主手 / 快捷栏 / 背包不触发。
 - 位置固定在 actionbar 文字上方（可配置间距），不遮挡也不被遮挡。
-- 尺寸以“纹理可见内容 52×128”为基准：宽度 = 槽位格 20px × `widthSlots`（默认 1.1），
-  高度默认按比例，可用 `heightSlots` 单独压低。
+- 尺寸以“纹理可见内容 52×128”为基准：可见宽度 = 槽位格 20px × `scale`（默认 1.1），高度始终按 52:128 自动。
 - 水平对齐副手**物品格**中心（`center∓109`），不是 29 宽的外框中心。
-- `config/ctt_shield_indicator.json` 配置：`enabled` / `showMeter` / `widthSlots` / `heightSlots` /
-  `gapAboveActionBar` / `meterMode`（`texture` 或 `model`）。
-- **Mod Menu 集成**：游戏内「模组 → CTT Shield Indicator → 配置」即可调整上面所有选项，
-  带「恢复默认」按钮，关闭界面自动写回配置文件。Mod Menu 是可选依赖，未安装时照常运行。
+- `config/ctt_shield_indicator.json` 配置：`enabled` / `scale` / `gapAboveActionBar`。
+- **Mod Menu 集成**：游戏内「模组 → CTT Shield Indicator → 配置」用滑块调整缩放比例与间距，带「恢复默认」按钮，关闭界面自动写回配置文件。Mod Menu 是可选依赖，未安装时照常运行。
 - 中英文界面文本（`assets/ctt_shield_indicator/lang/{en_us,zh_cn}.json`）。
 - 无需服务端安装任何数据包或 Mod。
 

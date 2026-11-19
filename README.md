@@ -64,22 +64,18 @@ With **Mod Menu** installed everything below is also editable in-game
 ```json
 {
   "enabled": true,
-  "showMeter": true,
-  "widthSlots": 1.1,
-  "heightSlots": 0.0,
-  "gapAboveActionBar": 2,
-  "meterMode": "texture"
+  "scale": 1.1,
+  "gapAboveActionBar": 2
 }
 ```
 
 | Key | Meaning |
 | --- | --- |
-| `enabled` | Master switch. |
-| `showMeter` | When false the whole indicator disappears. |
-| `widthSlots` | **Visible content** width = 20 px (one slot cell) × this value. `1.0` = one slot wide, `1.1` slightly wider (default), `1.5` wider still. |
-| `heightSlots` | **Visible content** height; `0` = follow the 52:128 ratio (1.1 wide → ≈54.2 tall). Set `1.5` to squash it to 22×30. |
+| `enabled` | Master switch. When false nothing is drawn. |
+| `scale` | Gauge scale: visible content width = 20 px (one slot cell) × this value. `1.0` = one slot wide, `1.1` slightly wider (default). Height always follows the texture's 52:128 ratio. |
 | `gapAboveActionBar` | Pixels between the gauge bottom and the top of the actionbar text. |
-| `meterMode` | `texture` (default) draws the PNG at the size above; `model` renders the resource pack's `meter_N` model instead. |
+
+In-game (Mod Menu) both numbers are sliders, so you can tune them while watching the result.
 
 Changes take effect after re-entering the world or restarting the game.
 
@@ -94,8 +90,7 @@ src/main/java/com/nyalium/cttshieldindicator/
     ShieldIndicatorConfigScreen.java  in-game settings screen
 src/main/resources/
     fabric.mod.json
-    assets/ctt_shield_indicator/    item model definitions (meter), gauge textures, en_us/zh_cn lang
-    assets/minecraft/               meter models and textures (used by meterMode=model)
+    assets/ctt_shield_indicator/    gauge textures, icon, en_us/zh_cn lang
 docs/                               layout preview, publishing guide
 ```
 
